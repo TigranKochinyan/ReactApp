@@ -1,0 +1,16 @@
+.Card {
+    padding: 1rem;
+    width: 25%;
+    margin: 1rem;
+    box-shadow: -1px 0px 4px;
+}
+
+.Card-img {
+    width: 90%;
+}
+
+.Card-paragraph {
+    text-align: left;
+    width: 90%;
+    margin: 0 auto;
+}
