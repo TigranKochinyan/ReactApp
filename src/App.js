@@ -1,12 +1,16 @@
 import './App.css';
-import Cards from './Components/Cards';
+import Product from './Components/Product'
 
 function App() {
-  return (
-    <div className="App">
-      <Cards />
-    </div>
-  );
+  	return (
+		<div className="App">
+			<Product 
+				name={'Orange'} 
+				price={5} 
+				description={'Golden oranges from kuala lumpur'} 
+			/>
+		</div>
+  	);
 }
 
 export default App;

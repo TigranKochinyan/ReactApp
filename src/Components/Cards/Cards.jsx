@@ -24,7 +24,7 @@ const Cards = () => {
     return (
         <div className="cards">
             <Card 
-                title={data[0].title} 
+                title={data[0].title}
                 description={data[0].description} 
                 src={data[0].src}
                 />
