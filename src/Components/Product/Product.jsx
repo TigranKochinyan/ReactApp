@@ -7,7 +7,7 @@ import Description from './../Description';
 
 class Product extends Component {
     render() {
-        const { price, currency, name, description } = this.props;
+        const { price, name, description } = this.props;
         return(
             <>
                 <Name name={name} />
