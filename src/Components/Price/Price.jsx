@@ -5,32 +5,28 @@ class Price extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            price: this.props.price,
-            currency: this.props.currency
+            price: this.props.price
         };
     };
     changeCurrency = () => {
         const diff = 500;//diff -- 1$ === 500Դ
-        const {price, currency} = this.state;
-
-        if (currency === '$') {
-            this.setState({
-                price: price*diff,
-                currency: 'դրամ'
-            });
+        let {price} = this.state;
+        let priceNum = parseFloat(price);
+        if (price.includes('$')) {
+            price = `${priceNum*diff}֏`;
         }
         else{
-            this.setState({
-                price: price*1/diff,
-                currency: '$'
-            });
+            price = `${priceNum/diff}$`;
         }
+        this.setState({
+            price: price,
+        });
     };
     render() {
-        const {price, currency} = this.state;
+        const {price} = this.state;
         return(
             <>
-                <small>price: {price} {currency}</small>
+                <small>price: {price}</small>
                 <button onClick={this.changeCurrency}>Change currancy</button>
             </>
         )

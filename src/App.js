@@ -6,8 +6,7 @@ function App() {
 		<div className="App">
 			<Product 
 				name={'Orange'} 
-				price={5}
-				currency={'$'} 
+				price={'5$'}
 				description={'Golden oranges from kuala lumpur'} 
 			/>
 		</div>

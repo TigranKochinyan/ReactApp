@@ -11,7 +11,7 @@ class Product extends Component {
         return(
             <>
                 <Name name={name} />
-                <Price price={price} currency={currency} />
+                <Price price={price} />
                 <Description description={description} />
             </>
         )
