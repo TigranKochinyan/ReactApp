@@ -1,14 +1,6 @@
 .TodoList {
-    &-list {
-        list-style: none;
-        width: 500px;
-        margin: 0 auto;
-        margin-top: 10px;
-        padding: 0;
-        border: 1px solid #333;
-        min-height: 500px;
-        li:nth-of-type(odd) {
-            background-color: red;
-        }
+    &-card {
+        width: 18rem;
+        margin: 10px 0; 
     }
 }
