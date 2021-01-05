@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './todoList.css';
+import './todoList.scss';
 
 class TodoList extends Component {
     state = {
@@ -13,7 +13,8 @@ class TodoList extends Component {
         })
     };
     handleClick = () => {
-        const { taskList, inputValue } = this.state;
+        const { inputValue } = this.state;
+        const taskList = [...this.state.taskList];
         if(inputValue) {
             taskList.push(inputValue)
             this.setState({
@@ -22,15 +23,20 @@ class TodoList extends Component {
             })
         }
     };
+    removeTask= (event) => {
+        console.log(event.target.attributes.name.name);
+    }
     render() {
         const { taskList } = this.state;
         const todoTasksElements = taskList.map((elem, index) => {
             return <li key={index}>
                 { elem }
+                <button name={index} onClick={this.removeTask}>delete</button>
             </li>
         });
+        
         return(
-            <div>
+            <div className="TodoList">
                 <h4>Todo List</h4>
                 <p>input task :</p>
                 <input 
@@ -39,7 +45,7 @@ class TodoList extends Component {
                     onChange={this.handleInputChange}
                 />
                 <button onClick={this.handleClick}>save</button>
-                <ul>
+                <ul className="TodoList-list">
                     { todoTasksElements }
                 </ul>
             </div>
