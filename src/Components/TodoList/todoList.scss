@@ -2,5 +2,10 @@
     &-card {
         width: 18rem;
         margin: 10px 0; 
+        &-check {
+            position: absolute;
+            top: 0px;
+            right: 5px;
+        }
     }
 }
