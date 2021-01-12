@@ -1,6 +1,10 @@
 .TodoList {
+    &-col {
+        // display: flex;
+        // justify-content: center;
+    }
     &-card {
-        width: 18rem;
+        // width: 18rem;
         margin: 10px 0; 
         &-check {
             position: absolute;

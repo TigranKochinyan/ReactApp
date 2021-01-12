@@ -29,7 +29,7 @@ class TodoList extends Component {
                 description: 'lorem ipsum dolor smit 222'
             }
         ],
-        checkedTasks: [],
+        checkedTasks: new Set(),
         inputValueTitle: '',
         inputValueDesc: '',
         validated: false,
@@ -42,32 +42,32 @@ class TodoList extends Component {
         });
     };
     checkTask = (id) => {
-        let {checkedTasks} = this.state;
-        if(checkedTasks.includes(id)) {
-            checkedTasks = checkedTasks.filter(delId => delId !== id);
+        let checkedTasks = new Set(this.state.checkedTasks);
+        if (checkedTasks.has(id)) {
+            checkedTasks.delete(id);
         }
         else {
-            checkedTasks.push(id);
+            checkedTasks.add(id);
         }
         this.setState({
             checkedTasks
         })
     }
     removeTask = (id) => {
-        let { taskList, checkedTasks } = this.state;
-        if(checkedTasks.length === 0) {
-            taskList = taskList.filter(item => item.id !== id);
-        }
-        else {
-            for(let id of checkedTasks){
-                taskList = taskList.filter(item => item.id !== id);
-            }
-        }
+        let taskList = [...this.state.taskList];
+        taskList = taskList.filter(item => item.id !== id);
         this.setState({
-            taskList,
-            checkedTasks: []
+            taskList
         });
     };
+    deleteSelected = () => {
+        let { checkedTasks } = this.state;
+        let taskList = this.state.taskList.filter(task => !checkedTasks.has(task.id));
+        this.setState({
+            taskList,
+            checkedTasks: new Set()
+        })
+    }
     handleSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -91,10 +91,10 @@ class TodoList extends Component {
         })
     };
     render() {
-        const { taskList, inputValueTitle, validated, inputValueDesc } = this.state;
+        const { taskList, inputValueTitle, validated, inputValueDesc, checkedTasks } = this.state;
         const tasks = taskList.map(item => {
             return (
-                <Col key={`item${item.id}`}>
+                <Col xl={3} md={4} sm={6} xs={12} className="TodoList-col" key={`item${item.id}`}>
                     <Card className="TodoList-card">
                         <Card.Body>
                             <Form.Check
@@ -107,7 +107,12 @@ class TodoList extends Component {
                             <Card.Text>
                                 {item.description}
                             </Card.Text>
-                            <Button onClick={() => this.removeTask(item.id)} variant="outline-danger">Delete</Button>
+                            <Button 
+                                onClick={() => this.removeTask(item.id)} 
+                                variant="outline-danger" 
+                                disabled={!!checkedTasks.size}
+                                >Delete
+                            </Button>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -117,8 +122,8 @@ class TodoList extends Component {
             <Container className="TodoList">
                 <SectioTitle title='Add new Task'/>
                 <Row>
-                    <Col xl={2} md={4} sm={6} xs={12}>
-                        <Card style={{ width: '20rem' }}>
+                    <Col xl={3} md={4} sm={6} xs={12}>
+                        <Card>
                         <Card.Body>
                             <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
                                 <Form.Row>
@@ -157,13 +162,14 @@ class TodoList extends Component {
                                             </InputGroup>
                                         </Form.Group>
                                     </Form.Row>
-                                <Button type="submit">Save Task</Button>
+                                <Button disabled={!!checkedTasks.size} type="submit">Save Task</Button>
                             </Form>
                         </Card.Body>
                         </Card>
                     </Col>
                 </Row>
                 <SectioTitle title='Your Tasks' />
+                <Button onClick={this.deleteSelected} variant="danger" disabled={!checkedTasks.size} className="mb-3 mt-3" >Delete selected tasks</Button>
                 <Row>
                     {tasks}
                 </Row>
