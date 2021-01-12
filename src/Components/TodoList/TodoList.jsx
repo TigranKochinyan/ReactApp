@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Card, Button, InputGroup, Form } from 'react-bootstrap';
 import './todoList.scss';
-import { v4 as uuidv4 } from 'uuid';
+import randomId from './../../helpers/randomIdGenerator';
 
 import SectioTitle from './../SectionTitle';
 
@@ -9,26 +9,27 @@ class TodoList extends Component {
     state = {
         taskList: [
             {
-                id: uuidv4(),
+                id: randomId(),
                 title: 'task 1',
                 description: 'lorem ipsum'
             },
             {
-                id: uuidv4(),
+                id: randomId(),
                 title: 'task 2',
                 description: 'lorem ipsum dolor smit'
             },
             {
-                id: uuidv4(),
+                id: randomId(),
                 title: 'task 3',
                 description: 'lorem ipsum dolor smit 2'
             },
             {
-                id: uuidv4(),
+                id: randomId(),
                 title: 'task 4',
                 description: 'lorem ipsum dolor smit 222'
             }
         ],
+        checkedTasks: [],
         inputValueTitle: '',
         inputValueDesc: '',
         validated: false,
@@ -40,12 +41,32 @@ class TodoList extends Component {
             [wichInput]: value
         });
     };
-    removeTask = (event) => {
-        const taskList = this.state.taskList.filter(item => item.id !== event.target.id);
-        console.log(event.target.id, taskList);
+    checkTask = (id) => {
+        let {checkedTasks} = this.state;
+        if(checkedTasks.includes(id)) {
+            checkedTasks = checkedTasks.filter(delId => delId !== id);
+        }
+        else {
+            checkedTasks.push(id);
+        }
         this.setState({
-            taskList
+            checkedTasks
         })
+    }
+    removeTask = (id) => {
+        let { taskList, checkedTasks } = this.state;
+        if(checkedTasks.length === 0) {
+            taskList = taskList.filter(item => item.id !== id);
+        }
+        else {
+            for(let id of checkedTasks){
+                taskList = taskList.filter(item => item.id !== id);
+            }
+        }
+        this.setState({
+            taskList,
+            checkedTasks: []
+        });
     };
     handleSubmit = (event) => {
         event.preventDefault();
@@ -57,7 +78,7 @@ class TodoList extends Component {
             return;
         }
         const newTask = {
-            id: uuidv4(),
+            id: randomId(),
             title: this.state.inputValueTitle,
             description: this.state.inputValueDesc
         };
@@ -76,11 +97,17 @@ class TodoList extends Component {
                 <Col key={`item${item.id}`}>
                     <Card className="TodoList-card">
                         <Card.Body>
+                            <Form.Check
+                                type="checkbox"
+                                id="autoSizingCheck"
+                                className="TodoList-card-check"
+                                onClick={(event)=> { this.checkTask(item.id) }}
+                            />
                             <Card.Title>{item.title}</Card.Title>
                             <Card.Text>
                                 {item.description}
                             </Card.Text>
-                            <Button id={item.id} onClick={this.removeTask} variant="outline-danger">Delete</Button>
+                            <Button onClick={() => this.removeTask(item.id)} variant="outline-danger">Delete</Button>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -88,9 +115,9 @@ class TodoList extends Component {
         });
         return (
             <Container className="TodoList">
-                <SectioTitle title='Add new Task' />
+                <SectioTitle title='Add new Task'/>
                 <Row>
-                    <Col>
+                    <Col xl={2} md={4} sm={6} xs={12}>
                         <Card style={{ width: '20rem' }}>
                         <Card.Body>
                             <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
@@ -116,7 +143,7 @@ class TodoList extends Component {
                                             <InputGroup>
                                                 <Form.Control
                                                     id='inputDesc'
-                                                    as="textarea" 
+                                                    as="textarea"
                                                     rows={3}
                                                     type="text"
                                                     placeholder="Description"
