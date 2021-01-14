@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Card, Button, InputGroup, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './todoList.scss';
 import randomId from './../../helpers/randomIdGenerator';
 
 import SectioTitle from './../SectionTitle';
+import NewTask from './NewTask';
+import Task from './Task';
+
 
 class TodoList extends Component {
     state = {
@@ -95,26 +98,12 @@ class TodoList extends Component {
         const tasks = taskList.map(item => {
             return (
                 <Col xl={3} md={4} sm={6} xs={12} className="TodoList-col" key={`item${item.id}`}>
-                    <Card className="TodoList-card">
-                        <Card.Body>
-                            <Form.Check
-                                type="checkbox"
-                                id="autoSizingCheck"
-                                className="TodoList-card-check"
-                                onClick={(event)=> { this.checkTask(item.id) }}
-                            />
-                            <Card.Title>{item.title}</Card.Title>
-                            <Card.Text>
-                                {item.description}
-                            </Card.Text>
-                            <Button 
-                                onClick={() => this.removeTask(item.id)} 
-                                variant="outline-danger" 
-                                disabled={!!checkedTasks.size}
-                                >Delete
-                            </Button>
-                        </Card.Body>
-                    </Card>
+                    <Task 
+                        checkTask={this.checkTask}
+                        item={item}
+                        removeTask={this.removeTask}
+                        disabled={!!checkedTasks.size}
+                    />
                 </Col>
             );
         });
@@ -123,49 +112,14 @@ class TodoList extends Component {
                 <SectioTitle title='Add new Task'/>
                 <Row>
                     <Col xl={3} md={4} sm={6} xs={12}>
-                        <Card>
-                        <Card.Body>
-                            <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
-                                <Form.Row>
-                                    <Form.Group as={Col} md="12" >
-                                        <Form.Label>Task title</Form.Label>
-                                        <Form.Control
-                                            id='inputTitle'
-                                            required
-                                            type="text"
-                                            placeholder="Title"
-                                            value={inputValueTitle}
-                                            onChange={this.handleInputChange}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            Task title should not be empty
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-                                </Form.Row>    
-                                    <Form.Row>
-                                        <Form.Group as={Col} md="12">
-                                            <Form.Label>Description</Form.Label>
-                                            <InputGroup>
-                                                <Form.Control
-                                                    id='inputDesc'
-                                                    as="textarea"
-                                                    rows={3}
-                                                    type="text"
-                                                    placeholder="Description"
-                                                    required
-                                                    value={inputValueDesc}
-                                                    onChange={this.handleInputChange}
-                                                />
-                                                <Form.Control.Feedback type="invalid">
-                                                    Description should not be empty
-                                                </Form.Control.Feedback>
-                                            </InputGroup>
-                                        </Form.Group>
-                                    </Form.Row>
-                                <Button disabled={!!checkedTasks.size} type="submit">Save Task</Button>
-                            </Form>
-                        </Card.Body>
-                        </Card>
+                        <NewTask 
+                            handleSubmit={this.handleSubmit}
+                            inputTitle={inputValueTitle}
+                            inputDesc={inputValueDesc}
+                            handleInputChange={this.handleInputChange}
+                            validated={validated}
+                            disabled={!!checkedTasks.size}
+                        />
                     </Col>
                 </Row>
                 <SectioTitle title='Your Tasks' />
