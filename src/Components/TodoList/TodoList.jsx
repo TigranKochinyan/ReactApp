@@ -11,28 +11,7 @@ import Confirm from './Confirm';
 
 class TodoList extends Component {
     state = {
-        taskList: [
-            {
-                id: randomId(),
-                title: 'task 1',
-                description: 'lorem ipsum'
-            },
-            {
-                id: randomId(),
-                title: 'task 2',
-                description: 'lorem ipsum dolor smit'
-            },
-            {
-                id: randomId(),
-                title: 'task 3',
-                description: 'lorem ipsum dolor smit 2'
-            },
-            {
-                id: randomId(),
-                title: 'task 4',
-                description: 'lorem ipsum dolor smit 222'
-            }
-        ],
+        taskList: [],
         checkedTasks: new Set(),
         inputValueTitle: '',
         inputValueDesc: '',
