@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import './todoList.scss';
-import randomId from './../../helpers/randomIdGenerator';
 
 import SectioTitle from './../SectionTitle';
 import NewTask from './NewTask';
@@ -13,17 +12,8 @@ class TodoList extends Component {
     state = {
         taskList: [],
         checkedTasks: new Set(),
-        inputValueTitle: '',
-        inputValueDesc: '',
-        validated: false,
-        show: false
-    };
-    handleInputChange = (event) => {
-        let { value } = event.target;
-        let wichInput = event.target.id === 'inputTitle' ? 'inputValueTitle' : 'inputValueDesc';      
-        this.setState({
-            [wichInput]: value
-        });
+        showWarning: false,
+        showNewTaskModal: false
     };
     checkTask = (id) => {
         let checkedTasks = new Set(this.state.checkedTasks);
@@ -50,38 +40,44 @@ class TodoList extends Component {
         this.setState({
             taskList,
             checkedTasks: new Set(),
-            show: false
+            showWarning: false
         })
     }
-    handleSubmit = (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            this.setState({
-                validated: true
-            })
-            return;
-        }
-        const newTask = {
-            id: randomId(),
-            title: this.state.inputValueTitle,
-            description: this.state.inputValueDesc
-        };
+    saveTask = (newTask) => {
         const taskList = [...this.state.taskList, newTask]
         this.setState({
-            validated: false,
             taskList,
-            inputValueTitle: '',
-            inputValueDesc: ''
+            showNewTaskModal: false
         })
     };
     showAndCloseWarning = () => {
         this.setState({
-            show: !this.state.show
+            showWarning: !this.state.showWarning
         })
     }
+    showAndCloseNewTaskModal = () => {
+        this.setState({
+            showNewTaskModal: !this.state.showNewTaskModal,
+            inputValueTitle: '',
+            inputValueDesc: '',
+        })
+    }
+    checkAllTasks = () => {
+        const taskIds = this.state.taskList.map( task => {
+            return task.id;
+        })
+        this.setState({
+            checkedTasks: new Set(taskIds)
+        })
+    };
+    unCheckAllTasks = () => {
+        this.setState({
+            checkedTasks: new Set()
+        })
+    }
+
     render() {
-        const { taskList, inputValueTitle, validated, inputValueDesc, checkedTasks } = this.state;
+        const { taskList, checkedTasks, showNewTaskModal } = this.state;
         const tasks = taskList.map(item => {
             return (
                 <Col xl={3} md={4} sm={6} xs={12} className="TodoList-col" key={`item${item.id}`}>
@@ -90,36 +86,41 @@ class TodoList extends Component {
                         item={item}
                         removeTask={this.removeTask}
                         disabled={!!checkedTasks.size}
-                        extraClass={ checkedTasks.has(item.id) ? 'checked' : '' }
+                        checked={ checkedTasks.has(item.id) }
                     />
                 </Col>
             );
         });
         return (
             <Container className="TodoList">
-                <SectioTitle title='Add new Task'/>
+                <SectioTitle title='Your Tasks' />
                 <Row>
-                    <Col xl={3} md={4} sm={6} xs={12}>
-                        <NewTask 
-                            handleSubmit={this.handleSubmit}
-                            inputTitle={inputValueTitle}
-                            inputDesc={inputValueDesc}
-                            handleInputChange={this.handleInputChange}
-                            validated={validated}
-                            disabled={!!checkedTasks.size}
-                        />
+                    <Col>
+                        <Button disabled={!!checkedTasks.size} onClick={this.showAndCloseNewTaskModal} className="mb-3 mt-3" > New Task </Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={this.showAndCloseWarning} variant="danger" disabled={!checkedTasks.size} className="mb-3 mt-3" >Delete selected tasks</Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={this.checkAllTasks} variant="warning" className="mb-3 mt-3" > Select Tasks </Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={this.unCheckAllTasks} variant="warning" className="mb-3 mt-3" > Deselect Tasks </Button>
                     </Col>
                 </Row>
-                <SectioTitle title='Your Tasks' />
-                <Button onClick={this.showAndCloseWarning} variant="danger" disabled={!checkedTasks.size} className="mb-3 mt-3" >Delete selected tasks</Button>
                 <Row>
                     {tasks}
                 </Row>
                 <Confirm 
-                    show={this.state.show}
+                    show={this.state.showWarning}
                     closeWarning={this.showAndCloseWarning}
                     confirm={this.deleteSelected}
                     taskCount={checkedTasks.size}
+                />
+                <NewTask 
+                    saveTask={this.saveTask}
+                    show={showNewTaskModal}
+                    closeWarning={this.showAndCloseNewTaskModal}
                 />
             </Container>
         );
