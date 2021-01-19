@@ -1,10 +1,10 @@
 .TodoList {
     &-col {
-        // display: flex;
-        // justify-content: center;
+        .checked {
+            border-color: #bd2130;
+        } 
     }
     &-card {
-        // width: 18rem;
         margin: 10px 0; 
         &-check {
             position: absolute;

@@ -6,36 +6,17 @@ import randomId from './../../helpers/randomIdGenerator';
 import SectioTitle from './../SectionTitle';
 import NewTask from './NewTask';
 import Task from './Task';
+import Confirm from './Confirm';
 
 
 class TodoList extends Component {
     state = {
-        taskList: [
-            {
-                id: randomId(),
-                title: 'task 1',
-                description: 'lorem ipsum'
-            },
-            {
-                id: randomId(),
-                title: 'task 2',
-                description: 'lorem ipsum dolor smit'
-            },
-            {
-                id: randomId(),
-                title: 'task 3',
-                description: 'lorem ipsum dolor smit 2'
-            },
-            {
-                id: randomId(),
-                title: 'task 4',
-                description: 'lorem ipsum dolor smit 222'
-            }
-        ],
+        taskList: [],
         checkedTasks: new Set(),
         inputValueTitle: '',
         inputValueDesc: '',
         validated: false,
+        show: false
     };
     handleInputChange = (event) => {
         let { value } = event.target;
@@ -68,7 +49,8 @@ class TodoList extends Component {
         let taskList = this.state.taskList.filter(task => !checkedTasks.has(task.id));
         this.setState({
             taskList,
-            checkedTasks: new Set()
+            checkedTasks: new Set(),
+            show: false
         })
     }
     handleSubmit = (event) => {
@@ -93,6 +75,11 @@ class TodoList extends Component {
             inputValueDesc: ''
         })
     };
+    showAndCloseWarning = () => {
+        this.setState({
+            show: !this.state.show
+        })
+    }
     render() {
         const { taskList, inputValueTitle, validated, inputValueDesc, checkedTasks } = this.state;
         const tasks = taskList.map(item => {
@@ -103,6 +90,7 @@ class TodoList extends Component {
                         item={item}
                         removeTask={this.removeTask}
                         disabled={!!checkedTasks.size}
+                        extraClass={ checkedTasks.has(item.id) ? 'checked' : '' }
                     />
                 </Col>
             );
@@ -123,10 +111,16 @@ class TodoList extends Component {
                     </Col>
                 </Row>
                 <SectioTitle title='Your Tasks' />
-                <Button onClick={this.deleteSelected} variant="danger" disabled={!checkedTasks.size} className="mb-3 mt-3" >Delete selected tasks</Button>
+                <Button onClick={this.showAndCloseWarning} variant="danger" disabled={!checkedTasks.size} className="mb-3 mt-3" >Delete selected tasks</Button>
                 <Row>
                     {tasks}
                 </Row>
+                <Confirm 
+                    show={this.state.show}
+                    closeWarning={this.showAndCloseWarning}
+                    confirm={this.deleteSelected}
+                    taskCount={checkedTasks.size}
+                />
             </Container>
         );
     };
