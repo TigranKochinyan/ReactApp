@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Card, Button, Form } from 'react-bootstrap';
 import './task.scss';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Task = (props) => {
-    const { item, checkTask, removeTask, disabled, checked } = props;
+    const { item, checkTask, editTask, removeTask, disabled, checked } = props;
     return (
         <Card className={`TodoList-card  ${checked ? 'checked' : ''}`}>
             <Card.Body>
@@ -32,7 +32,7 @@ const Task = (props) => {
                 </Button>
                 <Button
                     className="icon-in-button ml-1"
-                    onClick={() => removeTask(item.id)}
+                    onClick={() => editTask(item.id)}
                     variant="outline-warning"
                     disabled={disabled}
                 >
@@ -48,7 +48,8 @@ Task.propTypes = {
     checkTask: PropTypes.func.isRequired,
     removeTask: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
-    checked: PropTypes.bool.isRequired
+    checked: PropTypes.bool.isRequired,
+    editTask: PropTypes.func.isRequired
 }
 
 export default Task;

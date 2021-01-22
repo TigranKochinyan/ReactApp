@@ -13,7 +13,8 @@ class TodoList extends Component {
         taskList: [],
         checkedTasks: new Set(),
         showWarning: false,
-        showNewTaskModal: false
+        showNewTaskModal: false,
+        taskShouldUpdateing: null
     };
     checkTask = (id) => {
         let checkedTasks = new Set(this.state.checkedTasks);
@@ -43,13 +44,31 @@ class TodoList extends Component {
             showWarning: false
         })
     }
-    saveTask = (newTask) => {
+    saveOrUpdateTask = (newTask) => {
+        let index = this.state.taskList.findIndex( task => task.id === newTask.id );
+        if( index !== -1 ) {
+            const taskList = [...this.state.taskList];
+            taskList[index] = newTask;
+            this.setState({
+                taskList,
+                showNewTaskModal: false,
+                taskShouldUpdateing: null
+            })
+            return;
+        }
         const taskList = [...this.state.taskList, newTask]
         this.setState({
             taskList,
             showNewTaskModal: false
         })
     };
+    editTask = (id) => {
+        const taskShouldUpdateing = this.state.taskList.find(task => task.id === id);
+        this.setState({
+            taskShouldUpdateing,
+            showNewTaskModal: true
+        })
+    }
     showAndCloseWarning = () => {
         this.setState({
             showWarning: !this.state.showWarning
@@ -60,6 +79,8 @@ class TodoList extends Component {
             showNewTaskModal: !this.state.showNewTaskModal,
             inputValueTitle: '',
             inputValueDesc: '',
+            taskShouldUpdateing: null
+
         })
     }
     checkAllTasks = () => {
@@ -77,7 +98,7 @@ class TodoList extends Component {
     }
 
     render() {
-        const { taskList, checkedTasks, showNewTaskModal } = this.state;
+        const { taskList, checkedTasks, showNewTaskModal, taskShouldUpdateing, showWarning } = this.state;
         const tasks = taskList.map(item => {
             return (
                 <Col xl={3} md={4} sm={6} xs={12} className="TodoList-col" key={`item${item.id}`}>
@@ -87,6 +108,7 @@ class TodoList extends Component {
                         removeTask={this.removeTask}
                         disabled={!!checkedTasks.size}
                         checked={ checkedTasks.has(item.id) }
+                        editTask={this.editTask}
                     />
                 </Col>
             );
@@ -111,17 +133,23 @@ class TodoList extends Component {
                 <Row>
                     {tasks}
                 </Row>
-                <Confirm 
-                    show={this.state.showWarning}
-                    closeWarning={this.showAndCloseWarning}
-                    confirm={this.deleteSelected}
-                    taskCount={checkedTasks.size}
-                />
-                <NewTask 
-                    saveTask={this.saveTask}
-                    show={showNewTaskModal}
-                    closeWarning={this.showAndCloseNewTaskModal}
-                />
+                {
+                    showWarning && <Confirm 
+                        show={this.state.showWarning}
+                        closeWarning={this.showAndCloseWarning}
+                        confirm={this.deleteSelected}
+                        taskCount={checkedTasks.size}
+                    />
+                }
+                {
+                    showNewTaskModal && <NewTask
+                        saveTask={this.saveOrUpdateTask}
+                        show={showNewTaskModal}
+                        closeModal={this.showAndCloseNewTaskModal}
+                        task={taskShouldUpdateing}
+                    />
+                }
+                
             </Container>
         );
     };
