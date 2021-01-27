@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
 const SectionTitle = (props) => {
@@ -11,4 +11,4 @@ SectionTitle.propTypes = {
     title: PropTypes.string.isRequired
 }
 
-export default SectionTitle;
+export default memo(SectionTitle);

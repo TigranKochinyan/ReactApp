@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Form } from 'react-bootstrap';
 import './task.scss';
@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Task = (props) => {
-    const { item, checkTask, editTask, removeTask, disabled, checked } = props;
+    const { task, checkTask, editTask, removeTask, disabled, checked } = props;
     return (
         <Card className={`TodoList-card  ${checked ? 'checked' : ''}`}>
             <Card.Body>
@@ -16,15 +16,19 @@ const Task = (props) => {
                     id="autoSizingCheck"
                     className="TodoList-card-check"
                     checked={ checked }
-                    onChange={() => { checkTask(item.id) }}
+                    onChange={() => { checkTask(task.id) }}
                 />
-                <Card.Title>{item.title}</Card.Title>
+                <Card.Title>{task.title}</Card.Title>
+                <span className={`TodoList-card-priority ${task.priority}` }>
+                    {task.priority !== 'none' && task.priority  }
+                </span>
                 <Card.Text>
-                    {item.description}
+                    {task.description}
+
                 </Card.Text>
                 <Button
                     className="icon-in-button"
-                    onClick={() => removeTask(item.id)}
+                    onClick={() => removeTask(task.id)}
                     variant="outline-danger"
                     disabled={disabled}
                 >
@@ -32,7 +36,7 @@ const Task = (props) => {
                 </Button>
                 <Button
                     className="icon-in-button ml-1"
-                    onClick={() => editTask(item.id)}
+                    onClick={() => editTask(task.id)}
                     variant="outline-warning"
                     disabled={disabled}
                 >
@@ -44,7 +48,7 @@ const Task = (props) => {
 };
 
 Task.propTypes = {
-    item: PropTypes.object.isRequired,
+    task: PropTypes.object.isRequired,
     checkTask: PropTypes.func.isRequired,
     removeTask: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
@@ -52,4 +56,4 @@ Task.propTypes = {
     editTask: PropTypes.func.isRequired
 }
 
-export default Task;
+export default memo(Task);

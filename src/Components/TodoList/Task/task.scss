@@ -6,6 +6,22 @@
             }
         }
     }
+    &-priority {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 1px 5px;
+
+        &.low {
+            background-color: yellow;
+        }
+        &.medium {
+            background-color: green;
+        }
+        &.high {
+            background-color: red;
+        }
+    }
 }
 
 
