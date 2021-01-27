@@ -1,4 +1,14 @@
 .TodoList-card {
-
+    &-check {
+        .icon-in-button {
+            :hover {
+                color: #fff;
+            }
+        }
+    }
 }
 
+
+
+// .btn-outline-warning:hover {
+//     color: #fff;
