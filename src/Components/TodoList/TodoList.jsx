@@ -3,10 +3,9 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import './todoList.scss';
 
 import SectioTitle from './../SectionTitle';
-import NewTask from './NewTask';
+import NewTaskOrEdit from './NewTaskOrEdit';
 import Task from './Task';
 import Confirm from './Confirm';
-
 
 class TodoList extends Component {
     state = {
@@ -104,7 +103,7 @@ class TodoList extends Component {
                 <Col xl={3} md={4} sm={6} xs={12} className="TodoList-col" key={`item${item.id}`}>
                     <Task 
                         checkTask={this.checkTask}
-                        item={item}
+                        task={item}
                         removeTask={this.removeTask}
                         disabled={!!checkedTasks.size}
                         checked={ checkedTasks.has(item.id) }
@@ -142,7 +141,7 @@ class TodoList extends Component {
                     />
                 }
                 {
-                    showNewTaskModal && <NewTask
+                    showNewTaskModal && <NewTaskOrEdit
                         saveTask={this.saveOrUpdateTask}
                         show={showNewTaskModal}
                         closeModal={this.showAndCloseNewTaskModal}
