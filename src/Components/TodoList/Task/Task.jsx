@@ -6,6 +6,8 @@ import './task.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
+import { fromatingDate } from './../../../helpers/utils';
+
 const Task = (props) => {
     const { task, checkTask, editTask, removeTask, disabled, checked } = props;
     return (
@@ -19,11 +21,14 @@ const Task = (props) => {
                     onChange={() => { checkTask(task._id) }}
                 />
                 <Card.Title>{task.title}</Card.Title>
-                <span className={`TodoList-card-priority ${task.priority}` }>
+                {/* <span className={`TodoList-card-priority ${task.priority}` }>
                     {task.priority !== 'none' && task.priority  }
-                </span>
+                </span> */}
                 <Card.Text>
-                    {task.description}
+                    Description: {task.description}
+                </Card.Text>
+                <Card.Text>
+                    date: {fromatingDate(task.date)}
                 </Card.Text>
                 <Button
                     className="icon-in-button"

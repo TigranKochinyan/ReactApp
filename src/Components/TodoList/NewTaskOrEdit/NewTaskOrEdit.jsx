@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Button, InputGroup, Form, Modal } from 'react-bootstrap';
-// import randomId from './../../../helpers/randomIdGenerator';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import { fromatingDate } from './../../../helpers/utils';
 
 class NewTaskOrEdit extends React.Component {
     constructor(props) {
@@ -9,16 +12,21 @@ class NewTaskOrEdit extends React.Component {
         this.state = {
             inputValueTitle: props.task ? props.task.title : '',
             inputValueDesc: props.task ? props.task.description : '',
-            inputValueSelect: props.task ? props.task.select: 'none',
+            inputValueDate: new Date(),
             validated: false
         };
     };
     handleInputChange = (event) => {
         let { value } = event.target;
-        let wichInput = event.target.name;      
+        let wichInput = event.target.name;     
         this.setState({
             [wichInput]: value
         });
+    };
+    handleDateChange = (date) => {
+        this.setState({
+            inputValueDate: date || new Date()
+        })
     };
     handleSubmit = (event) => {
         event.preventDefault();
@@ -30,9 +38,11 @@ class NewTaskOrEdit extends React.Component {
             return;
         }
         const { saveTask } = this.props;//if this.props.task is not null updateing task else creating new task with new random id
+        const { inputValueDate } = this.state;
         const newTask = {
             title: this.state.inputValueTitle,
             description: this.state.inputValueDesc,
+            date: fromatingDate( inputValueDate.toISOString() ),
             _id: this.props.task?._id
         };
         saveTask(newTask);
@@ -84,6 +94,18 @@ class NewTaskOrEdit extends React.Component {
                                 </InputGroup>
                             </Form.Group>
                         </Form.Row>
+                        <Form.Row>
+                            <Form.Group as={Col} md="12">
+                            <DatePicker
+                                selected={ this.state.inputValueDate }
+                                onChange={ this.handleDateChange }
+                                name="inputValueDate"
+                                // showTimeSelect
+                                // dateFormat="Pp"
+                                minDate={ new Date() }
+                                />
+                            </Form.Group>
+                        </Form.Row>    
                         <Button type="submit" variant="success">Save Task</Button>
                         <Button variant="secondary" className="ml-1" onClick={closeModal} >
                             Close
