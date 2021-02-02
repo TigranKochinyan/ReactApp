@@ -16,7 +16,7 @@ const Task = (props) => {
                     id="autoSizingCheck"
                     className="TodoList-card-check"
                     checked={ checked }
-                    onChange={() => { checkTask(task.id) }}
+                    onChange={() => { checkTask(task._id) }}
                 />
                 <Card.Title>{task.title}</Card.Title>
                 <span className={`TodoList-card-priority ${task.priority}` }>
@@ -24,11 +24,10 @@ const Task = (props) => {
                 </span>
                 <Card.Text>
                     {task.description}
-
                 </Card.Text>
                 <Button
                     className="icon-in-button"
-                    onClick={() => removeTask(task.id)}
+                    onClick={() => removeTask(task._id)}
                     variant="outline-danger"
                     disabled={disabled}
                 >
@@ -36,7 +35,7 @@ const Task = (props) => {
                 </Button>
                 <Button
                     className="icon-in-button ml-1"
-                    onClick={() => editTask(task.id)}
+                    onClick={() => editTask(task._id)}
                     variant="outline-warning"
                     disabled={disabled}
                 >

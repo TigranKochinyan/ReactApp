@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Button, InputGroup, Form, Modal } from 'react-bootstrap';
-import randomId from './../../../helpers/randomIdGenerator';
+// import randomId from './../../../helpers/randomIdGenerator';
 
 class NewTaskOrEdit extends React.Component {
     constructor(props) {
@@ -13,14 +13,9 @@ class NewTaskOrEdit extends React.Component {
             validated: false
         };
     };
-    handleSelect = (event) => {
-        this.setState({
-            inputValueSelect: event.currentTarget.value
-        })
-    };
     handleInputChange = (event) => {
         let { value } = event.target;
-        let wichInput = event.target.id === 'inputTitle' ? 'inputValueTitle' : 'inputValueDesc';      
+        let wichInput = event.target.name;      
         this.setState({
             [wichInput]: value
         });
@@ -34,17 +29,16 @@ class NewTaskOrEdit extends React.Component {
             })
             return;
         }
-        const {task, saveTask} = this.props;//if this.props.task is not null updateing task else creating new task with new random id
+        const { saveTask } = this.props;//if this.props.task is not null updateing task else creating new task with new random id
         const newTask = {
-            id: task ? task.id : randomId(),
             title: this.state.inputValueTitle,
             description: this.state.inputValueDesc,
-            priority: this.state.inputValueSelect
+            _id: this.props.task?._id
         };
         saveTask(newTask);
     };
     render() {
-        const { validated, inputValueDesc, inputValueTitle, inputValueSelect } = this.state;
+        const { validated, inputValueDesc, inputValueTitle } = this.state;
         const { show, closeModal, task } = this.props;
         return (
             <Modal
@@ -62,7 +56,7 @@ class NewTaskOrEdit extends React.Component {
                             <Form.Group as={Col} md="12" >
                                 <Form.Label>Task title</Form.Label>
                                 <Form.Control
-                                    id='inputTitle'
+                                    name='inputValueTitle'
                                     required
                                     type="text"
                                     placeholder="Title"
@@ -75,20 +69,11 @@ class NewTaskOrEdit extends React.Component {
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>
-                            <Form.Label>Select Priority</Form.Label>
-                            <Form.Control onChange={this.handleSelect} value={inputValueSelect} as="select" size="sm" custom>
-                            <option>none</option>
-                            <option>low</option>
-                            <option>medium</option>
-                            <option>high</option>
-                            </Form.Control>
-                        </Form.Row>
-                        <Form.Row>
                             <Form.Group as={Col} md="12">
                                 <Form.Label>Description</Form.Label>
                                 <InputGroup>
                                     <Form.Control
-                                        id='inputDesc'
+                                        name='inputValueDesc'
                                         as="textarea"
                                         rows={3}
                                         type="text"
