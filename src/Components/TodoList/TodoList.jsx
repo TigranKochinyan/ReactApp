@@ -6,6 +6,7 @@ import SectioTitle from './../SectionTitle';
 import NewTaskOrEdit from './NewTaskOrEdit';
 import Task from './Task';
 import Confirm from './Confirm';
+import TaskSort from './TaskSort';
 
 class TodoList extends Component {
     state = {
@@ -116,8 +117,7 @@ class TodoList extends Component {
     saveOrUpdateTask = (newTask) => {
         let index = this.state.taskList.findIndex( task => task._id === newTask._id );
         const taskList = [...this.state.taskList];
-        if( index !== -1 ) {
-            console.log('update', index);
+        if( index !== -1 ) {//update
             fetch(`http://localhost:3001/task/${newTask._id}`, {
                     method: 'PUT',
                     headers: {
@@ -127,7 +127,6 @@ class TodoList extends Component {
                 })
                 .then(async (response) => {
                     const res = await response.json();
-    
                     if(response.status >=400 && response.status < 600){
                         if(res.error){
                             throw res.error;
@@ -136,7 +135,7 @@ class TodoList extends Component {
                             throw new Error('Something went wrong!');
                         }
                     }
-                    taskList[index] = newTask;
+                    taskList[index] = res;
                     this.setState({
                         showNewTaskModal: false,
                         taskList
@@ -177,9 +176,7 @@ class TodoList extends Component {
             });
     };
     editTask = (id) => {
-        console.log(id,'edit task id');
         const taskShouldUpdateing = this.state.taskList.find(task => task._id === id);
-        console.log(taskShouldUpdateing);
         this.setState({
             taskShouldUpdateing,
             showNewTaskModal: true
@@ -211,12 +208,34 @@ class TodoList extends Component {
             checkedTasks: new Set()
         });
     };
+    ///////////////////////////////////////////
+    sortTasks = ( type = 'up', sortBy ) => {
+        if (!sortBy) {
+            return
+        }
+        const taskList = [...this.state.taskList];        
+        taskList.sort((a, b) => {
+            if(a[sortBy] > b[sortBy]){
+                return type === 'up' ?  1 : -1;
+            }
+            if(a[sortBy] < b[sortBy]){
+                return type === 'up' ?  -1 : 1;
+            }
+            return 0;
+        });
+        this.setState({
+            taskList
+        })
+    }
 
     render() {
         const { taskList, checkedTasks, showNewTaskModal, taskShouldUpdateing, showWarning } = this.state;
         const tasks = taskList.map(item => {
             return (
-                <Col xl={3} md={4} sm={6} xs={12} className="TodoList-col" key={`item${item._id}`}>
+                <Col xl={3} md={4} sm={6} xs={12} 
+                    className={`TodoList-col ${this.state.sorted ? 'sorted' : ''}`} 
+                    key={`item${item._id}`}
+                >
                     <Task 
                         checkTask={this.checkTask}
                         task={item}
@@ -245,6 +264,7 @@ class TodoList extends Component {
                         <Button onClick={this.unCheckAllTasks} variant="warning" className="mb-3 mt-3" > Deselect Tasks </Button>
                     </Col>
                 </Row>
+                <TaskSort sortTasks={this.sortTasks} />
                 <Row>
                     {tasks}
                 </Row>

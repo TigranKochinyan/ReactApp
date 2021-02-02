@@ -1,0 +1,20 @@
+.taskSort {
+    display: flex;
+    justify-content: center;
+    &-button {
+        padding: 10px 20px;
+        border: 1px solid rgba(0,0,0,.125);
+        
+        p {
+            color: #000;
+
+            &:hover {
+                text-decoration: none;
+            }
+
+            span {
+                font-size: 1.5em;
+            }
+        }
+    }
+}
