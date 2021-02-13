@@ -54,7 +54,7 @@ class TodoList extends Component {
             checkedTasks
         });
     };
-    removeTask = (id) => {//how it works corectly?
+    removeTask = (id) => {
         fetch(`http://localhost:3001/task/${id}`, {
                 method: 'DELETE',
                 headers: {

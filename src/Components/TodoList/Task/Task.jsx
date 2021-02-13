@@ -2,11 +2,13 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Form } from 'react-bootstrap';
 import './task.scss';
+import { Link } from 'react-router-dom';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { fromatingDate } from './../../../helpers/utils';
+import { fromatingDate, cutText } from './../../../helpers/utils';
 
 const Task = (props) => {
     const { task, checkTask, editTask, removeTask, disabled, checked } = props;
@@ -20,12 +22,14 @@ const Task = (props) => {
                     checked={ checked }
                     onChange={() => { checkTask(task._id) }}
                 />
-                <Card.Title>{task.title}</Card.Title>
+                <Card.Title>
+                    <Link to={`/task/${task._id}`}> {task.title} </Link>
+                </Card.Title>
                 {/* <span className={`TodoList-card-priority ${task.priority}` }>
                     {task.priority !== 'none' && task.priority  }
                 </span> */}
                 <Card.Text>
-                    Description: {task.description}
+                    Description: {cutText(task.description)}
                 </Card.Text>
                 <Card.Text>
                     date: {fromatingDate(task.date)}
