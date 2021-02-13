@@ -12,13 +12,13 @@ class NewTaskOrEdit extends React.Component {
         this.state = {
             inputValueTitle: props.task ? props.task.title : '',
             inputValueDesc: props.task ? props.task.description : '',
-            inputValueDate: new Date(),
+            inputValueDate: props.task ? new Date(props.task.date) : new Date(),
             validated: false
         };
     };
     handleInputChange = (event) => {
         let { value } = event.target;
-        let wichInput = event.target.name;     
+        let wichInput = event.target.name;  
         this.setState({
             [wichInput]: value
         });
@@ -37,7 +37,7 @@ class NewTaskOrEdit extends React.Component {
             })
             return;
         }
-        const { saveTask } = this.props;//if this.props.task is not null updateing task else creating new task with new random id
+        const { saveTask } = this.props;//if this.props.task is not null updateing task else creating new task
         const { inputValueDate } = this.state;
         const newTask = {
             title: this.state.inputValueTitle,
