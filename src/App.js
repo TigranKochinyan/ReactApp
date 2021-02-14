@@ -11,7 +11,9 @@ import {
 import NavMenu from './Components/NavMenu';
 import SingleTask from './pages/SingleTask';
 import About from './pages/About';
+import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
+
 
 function App() {
   	return (
@@ -23,7 +25,9 @@ function App() {
 				</Route>
 				<Route exact path="/about">
 					<About />
-					
+				</Route>
+				<Route exact path="/contact">
+					<Contact />
 				</Route>
 				<Route exact path="/task/:taskId" component={SingleTask} />
 				<Route exact path="/not-found">

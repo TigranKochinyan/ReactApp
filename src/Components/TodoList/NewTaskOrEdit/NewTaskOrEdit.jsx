@@ -9,6 +9,7 @@ import { fromatingDate } from './../../../helpers/utils';
 class NewTaskOrEdit extends React.Component {
     constructor(props) {
         super(props);
+        this.titleInputRef = React.createRef();
         this.state = {
             inputValueTitle: props.task ? props.task.title : '',
             inputValueDesc: props.task ? props.task.description : '',
@@ -16,6 +17,9 @@ class NewTaskOrEdit extends React.Component {
             validated: false
         };
     };
+    componentDidMount() {
+        this.titleInputRef.current.focus();//when modal open title input was focused
+    }
     handleInputChange = (event) => {
         let { value } = event.target;
         let wichInput = event.target.name;  
@@ -66,6 +70,7 @@ class NewTaskOrEdit extends React.Component {
                             <Form.Group as={Col} md="12" >
                                 <Form.Label>Task title</Form.Label>
                                 <Form.Control
+                                    ref={this.titleInputRef}
                                     name='inputValueTitle'
                                     required
                                     type="text"

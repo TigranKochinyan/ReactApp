@@ -1,0 +1,7 @@
+.contact {
+    &-input {
+        &.input-invalid {
+            border: 1px solid #dc3545;
+        }
+    }
+}
