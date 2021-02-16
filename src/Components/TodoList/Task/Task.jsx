@@ -23,7 +23,7 @@ const Task = (props) => {
                     onChange={() => { checkTask(task._id) }}
                 />
                 <Card.Title>
-                    <Link to={`/task/${task._id}`}> {task.title} </Link>
+                    <Link to={`/task/${task._id}`}> {cutText(task.title, 20)} </Link>
                 </Card.Title>
                 {/* <span className={`TodoList-card-priority ${task.priority}` }>
                     {task.priority !== 'none' && task.priority  }
