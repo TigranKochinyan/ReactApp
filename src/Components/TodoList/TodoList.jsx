@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import './todoList.scss';
+import { connect } from 'react-redux';
+import request from './../../helpers/request';
 
 import SectioTitle from './../SectionTitle';
 import NewTaskOrEdit from './NewTaskOrEdit';
@@ -10,37 +12,13 @@ import TaskSort from './TaskSort';
 
 class TodoList extends Component {
     state = {
-        taskList: [],
         checkedTasks: new Set(),
         showWarning: false,
         showNewTaskModal: false,
         taskShouldUpdateing: null
     };
     componentDidMount() {
-        fetch('http://localhost:3001/task', {
-            method: 'GET',
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        })
-            .then(async (response) => {
-                const data = await response.json();
-                if(response.status >=400 && response.status < 600){
-                    if(data.error){
-                        throw data.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-                this.setState({
-                    taskList: data
-                });
-            })
-            .catch((error)=>{
-                console.log('catch error', error);
-            });
-
+        this.props.getTasks();
     };
     checkTask = (id) => {
         let checkedTasks = new Set(this.state.checkedTasks);
@@ -55,128 +33,23 @@ class TodoList extends Component {
         });
     };
     removeTask = (id) => {
-        fetch(`http://localhost:3001/task/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(async (response) => {
-                const res = await response.json();
-
-                if(response.status >=400 && response.status < 600){
-                    if(res.error){
-                        throw res.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-                let taskList = this.state.taskList.filter(task => { return task._id !== id });
-                this.setState({
-                    taskList
-                });
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        this.props.deleteTask(id);
     };
     deleteSelected = () => {
         let { checkedTasks } = this.state;
         let arraySelected = [...checkedTasks];
-        fetch(`http://localhost:3001/task`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        tasks: arraySelected
-                    }),
-                })
-                .then(async (response) => {
-                    const res = await response.json();
-                    if(response.status >=400 && response.status < 600){
-                        if(res.error){
-                            throw res.error;
-                        }
-                        else {
-                            throw new Error('Something went wrong!');
-                        }
-                    }
-                    let taskList = this.state.taskList.filter(task => !checkedTasks.has(task._id));
-                    this.setState({
-                        taskList,
-                        checkedTasks: new Set(),
-                        showWarning: false
-                    });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+        this.props.deleteSelected({tasks: arraySelected}, checkedTasks);
     }
     saveOrUpdateTask = (newTask) => {
-        let index = this.state.taskList.findIndex( task => task._id === newTask._id );
-        const taskList = [...this.state.taskList];
+        let index = this.props.taskList.findIndex( task => task._id === newTask._id );
         if( index !== -1 ) {//update
-            fetch(`http://localhost:3001/task/${newTask._id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newTask),
-                })
-                .then(async (response) => {
-                    const res = await response.json();
-                    if(response.status >=400 && response.status < 600){
-                        if(res.error){
-                            throw res.error;
-                        }
-                        else {
-                            throw new Error('Something went wrong!');
-                        }
-                    }
-                    taskList[index] = res;
-                    this.setState({
-                        showNewTaskModal: false,
-                        taskList
-                    });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            this.props.updateTask(newTask,index);
             return;
         };
-        fetch('http://localhost:3001/task', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newTask),
-            })
-            .then(async (response) => {
-                const res = await response.json();
-
-                if(response.status >=400 && response.status < 600){
-                    if(res.error){
-                        throw res.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-                taskList.push(res);
-
-                this.setState({
-                    taskList,
-                    showNewTaskModal: false
-                });
-            })
-            .catch((error)=>{
-                console.log('catch error', error);
-            });
+        this.props.saveTask(newTask);
     };
     editTask = (id) => {
-        const taskShouldUpdateing = this.state.taskList.find(task => task._id === id);
+        const taskShouldUpdateing = this.props.taskList.find(task => task._id === id);
         this.setState({
             taskShouldUpdateing,
             showNewTaskModal: true
@@ -196,7 +69,7 @@ class TodoList extends Component {
         });
     };
     checkAllTasks = () => {
-        const taskIds = this.state.taskList.map( task => {
+        const taskIds = this.props.taskList.map( task => {
             return task._id;
         });
         this.setState({
@@ -209,11 +82,11 @@ class TodoList extends Component {
         });
     };
     ///////////////////////////////////////////
-    sortTasks = ( type = 'up', sortBy ) => {
+    sortTasks = ( type = 'up', sortBy ) => {//not working, comming soon
         if (!sortBy) {
             return
         }
-        const taskList = [...this.state.taskList];        
+        const taskList = [...this.props.taskList];  
         taskList.sort((a, b) => {
             if(a[sortBy] > b[sortBy]){
                 return type === 'up' ?  1 : -1;
@@ -223,13 +96,28 @@ class TodoList extends Component {
             }
             return 0;
         });
-        this.setState({
-            taskList
-        })
+        this.props.sortTasks(taskList);
+    }
+
+    componentDidUpdate(prevProps) {
+        if(!prevProps.sucsessSaveOrUpdateTask && this.props.sucsessSaveOrUpdateTask) {
+            this.setState({
+                showNewTaskModal: false
+            });
+            return
+        }
+        if(!prevProps.sucsessDeleteSelected && this.props.sucsessDeleteSelected) {
+            this.setState({
+                showWarning: false,
+                checkedTasks: new Set()
+            });
+            return;
+        }
     }
 
     render() {
-        const { taskList, checkedTasks, showNewTaskModal, taskShouldUpdateing, showWarning } = this.state;
+        const { taskList } = this.props;
+        const { checkedTasks, showNewTaskModal, taskShouldUpdateing, showWarning } = this.state;
         const tasks = taskList.map(item => {
             return (
                 <Col xl={3} md={4} sm={6} xs={12} 
@@ -290,4 +178,68 @@ class TodoList extends Component {
     };
 };
 
-export default TodoList;
+const mapStateToProps = (store) =>{
+    return {
+        taskList: store.taskList,
+        sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask,
+        sucsessDeleteSelected: store.sucsessDeleteSelected
+    }
+}
+
+const mapDispatchToProps = {
+    getTasks: ()=>{
+        return (dispatch) => {
+            request('http://localhost:3001/task')
+            .then((tasks)=>{
+                dispatch({type: 'GET_TASKS', tasks: tasks});
+            });
+        }
+    },
+    saveTask: (task) => {
+        return (dispatch) => {
+            dispatch({type: 'ADDING_TASK'});
+
+            request('http://localhost:3001/task', 'POST', task)
+            .then((task)=>{
+                dispatch({type: 'ADD_TASK', task: task});
+            });
+        }
+    },
+    updateTask: (updatedTask, index) => {
+        return (dispatch) => {
+            dispatch({type: 'ADDING_TASK'});
+
+            request(`http://localhost:3001/task/${updatedTask._id}`, 'PUT', updatedTask)
+            .then((task)=>{
+                dispatch({type: 'UPDATE_TASK', updatedTask, index});
+            });
+        }
+    },
+    deleteTask: (id) => {
+        return (dispatch) => {
+            request(`http://localhost:3001/task/${id}`, 'DELETE')
+            .then((res)=>{
+                console.log(res,'del');
+                dispatch({type: 'DELETE_TASK', id});
+            });
+        }
+    },
+    deleteSelected: (requestBody, checkedTasks) => {
+        return (dispatch) => {
+            dispatch({type: 'DELETING_SELECTED'});
+
+            request(`http://localhost:3001/task`, 'PATCH', requestBody)
+            .then((res)=>{
+                dispatch({type: 'DELETE_SELECTED', checkedTasks});
+            })
+        }
+    },
+    sortTasks: (taskList) => {
+        return (dispatch) => {
+            dispatch({type: 'SORT_LIST', taskList});
+        }
+    }
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

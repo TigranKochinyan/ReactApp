@@ -75,7 +75,7 @@ const Contact = () => {
     };
 
     const validator = (name, value) => {
-        if(name === 'inputEmail' && !(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(value)){
+        if(name === 'inputEmail' && !(new RegExp(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)).test(value)){
             // console.log('invalid email');
             setInputsIsValid({
                 ...inputsIsValid,
@@ -137,7 +137,7 @@ const Contact = () => {
                         <Form.Group controlId="formBasicCheckbox">
                             <Form.Label>Your message</Form.Label>
                             <Form.Control
-                                className="contact-input input-invalid"
+                                className="contact-input"
                                 name="inputText"
                                 as="textarea"
                                 rows={3}
