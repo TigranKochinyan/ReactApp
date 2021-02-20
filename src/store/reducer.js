@@ -14,6 +14,12 @@ export default function reducer(state=defaultState, action){
           taskList: action.tasks
         };
       }
+      case 'GET_TASK':{
+        return {
+          ...state,
+          task: action.task
+        };
+      }
       case 'ADDING_TASK':{
         return {
           ...state,

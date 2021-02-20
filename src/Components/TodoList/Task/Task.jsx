@@ -1,9 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Form } from 'react-bootstrap';
 import './task.scss';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
+import { deleteTask } from './../../../store/actions';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +13,7 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { fromatingDate, cutText } from './../../../helpers/utils';
 
 const Task = (props) => {
-    const { task, checkTask, editTask, removeTask, disabled, checked } = props;
+    const { task, checkTask, editTask, deleteTask, disabled, checked } = props;
     return (
         <Card className={`TodoList-card  ${checked ? 'checked' : ''}`}>
             <Card.Body>
@@ -36,7 +38,7 @@ const Task = (props) => {
                 </Card.Text>
                 <Button
                     className="icon-in-button"
-                    onClick={() => removeTask(task._id)}
+                    onClick={() => deleteTask(task._id)}
                     variant="outline-danger"
                     disabled={disabled}
                 >
@@ -58,10 +60,13 @@ const Task = (props) => {
 Task.propTypes = {
     task: PropTypes.object.isRequired,
     checkTask: PropTypes.func.isRequired,
-    removeTask: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     checked: PropTypes.bool.isRequired,
     editTask: PropTypes.func.isRequired
 }
 
-export default memo(Task);
+const mapDispatchToProps = {
+    deleteTask,
+};
+
+export default connect(null, mapDispatchToProps)(Task);

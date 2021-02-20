@@ -2,9 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
 
+import { connect } from 'react-redux';
+import { deleteSelected } from './../../../store/actions';
+
 const Confirm = (props) => {
 
-    const { show, closeWarning, taskCount, confirm } = props;
+    const { show, closeWarning, checkedTasks } = props;
+    const taskCount = checkedTasks.size;
+
+    const deleteSelected = () => {
+        let arraySelected = [...checkedTasks];
+        props.deleteSelected({tasks: arraySelected}, checkedTasks);
+    };
+
     return (
         <Modal
             show={show}
@@ -19,7 +29,7 @@ const Confirm = (props) => {
                 <Button variant="secondary" onClick={closeWarning} >
                     Close
             </Button>
-                <Button variant="warning" onClick={confirm}>Confirm</Button>
+                <Button variant="warning" onClick={deleteSelected}>Confirm</Button>
             </Modal.Footer>
         </Modal>
     );
@@ -27,10 +37,13 @@ const Confirm = (props) => {
 
 Confirm.propTypes = {
     show: PropTypes.bool.isRequired,
-    taskCount: PropTypes.number.isRequired,
-    confirm: PropTypes.func.isRequired,
-    closeWarning: PropTypes.func.isRequired
-}
+    closeWarning: PropTypes.func.isRequired,
+    checkedTasks: PropTypes.object.isRequired //Set
+};
 
-export default Confirm;
+const mapDispatchToProps = {
+    deleteSelected
+};
+
+export default connect(null, mapDispatchToProps)(Confirm);
 

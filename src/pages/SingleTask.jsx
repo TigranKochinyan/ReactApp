@@ -1,11 +1,11 @@
 import React from 'react';
-
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-
 import NewTaskOrEdit from './../Components/TodoList/NewTaskOrEdit';
+
+import { connect } from 'react-redux';
+import { getTasks, saveTask, deleteTask } from './../store/actions';
 
 import { fromatingDate } from './../helpers/utils';
 
@@ -16,84 +16,32 @@ class SingleTask extends React.Component {
     };
     componentDidMount() {
         const { taskId } = this.props.match.params;
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: 'GET',
-            headers: {
-                "Content-Type": 'application/json'
-            }
+        this.props.getTasks();
+        const task = this.props.taskList.find(task => task._id === taskId);
+        this.setState({
+            task: task
         })
-            .then(async (response) => {
-                const data = await response.json();
-                if(response.status >=400 && response.status < 600){
-                    if(data.error){
-                        throw data.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-                this.setState({
-                    task: data
-                });
-            })
-            .catch((error)=>{
-                console.log('catch error', error);
-            });
     };
-    updateTask = (newTask) => {
-        fetch(`http://localhost:3001/task/${newTask._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newTask),
-            })
-            .then(async (response) => {
-                const res = await response.json();
-                if(response.status >=400 && response.status < 600){
-                    if(res.error){
-                        throw res.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-                this.setState({
-                    showModal: false,
-                    task: res
-                });
-            })
-            .catch((error) => {
-                console.error('Error:', error);
+    componentDidUpdate(prevProps) {
+        if(!prevProps.sucsessSaveOrUpdateTask && this.props.sucsessSaveOrUpdateTask) {
+            const { taskId } = this.props.match.params;
+            const task = this.props.taskList.find(task => task._id === taskId);
+            this.setState({
+                showModal: false,
+                task
             });
-        return;
+            return;
+        }
+    }
+    updateTask = (newTask) => {
+        let index = this.props.taskList.findIndex( task => task._id === newTask._id );
+        this.props.updateTask(newTask, index);
     };
     removeTask = (id) => {
-        fetch(`http://localhost:3001/task/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(async (response) => {
-                const res = await response.json();
-
-                if(response.status >=400 && response.status < 600){
-                    if(res.error){
-                        throw res.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-                this.props.history.push('/')
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        this.props.deleteTask(id);
+        this.props.history.push('/');
     };
     closeModal = () => {
-        console.log(this.state);
         this.setState({
             showModal: !this.state.showModal
         })
@@ -101,7 +49,7 @@ class SingleTask extends React.Component {
 
 
     render() {
-        const { task, showModal } = this.state;
+        const { showModal, task } = this.state;
 
         return (
             <Container className="TodoList">
@@ -149,4 +97,17 @@ class SingleTask extends React.Component {
     }
 }
 
-export default SingleTask;
+const mapStateToProps = (store) => {
+    return {
+        taskList: store.taskList,
+        sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask
+    }
+}
+
+const mapDispatchToProps = {
+    getTasks,
+    saveTask,
+    deleteTask
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);
