@@ -1,66 +1,89 @@
 const defaultState = { 
     taskList: [],
+    task: null,
     sucsessSaveOrUpdateTask: false,
-    sucsessDeleteSelected: false
+    sucsessDeleteSelected: false,
+    loading: false,
+    successMessage: null, 
+    errorMessage: null
 };
 
 
 export default function reducer(state=defaultState, action){
     
     switch(action.type){
+      case 'ERROR':{
+        return {
+          ...state,
+          loading: false,
+          errorMessage: action.message
+        }
+      }
+      case 'PENDING':{
+        return {
+          ...state,
+          loading: true,
+          sucsessSaveOrUpdateTask: false,
+          sucsessDeleteSelected: false,
+          successMessage: null, 
+          errorMessage: null
+        };
+      }
       case 'GET_TASKS':{
         return {
           ...state,
+          loading: false,
           taskList: action.tasks
         };
       }
       case 'GET_TASK':{
         return {
           ...state,
+          loading: false,
           task: action.task
-        };
-      }
-      case 'ADDING_TASK':{
-        return {
-          ...state,
-          sucsessSaveOrUpdateTask: false
-        };
-      }
-      case 'DELETING_SELECTED':{
-        return {
-          ...state,
-          sucsessDeleteSelected: false
         };
       }
       case 'ADD_TASK':{
         return {
           ...state,
+          loading: false,
           taskList: [...state.taskList, action.task],
-          sucsessSaveOrUpdateTask: true
+          sucsessSaveOrUpdateTask: true,
+          successMessage: 'Task created succsessfully'
         };
       }
       case 'UPDATE_TASK':{
         const taskList = [...state.taskList];
-        taskList[action.index] = action.updatedTask;
+        const updetedTaskIndex = taskList.findIndex((task) => action.updatedTask._id === task._id);
+        taskList[updetedTaskIndex] = action.updatedTask;
         return {
           ...state,
+          loading: false,
+          task: action.updatedTask,
           taskList,
-          sucsessSaveOrUpdateTask: true
+          sucsessSaveOrUpdateTask: true,
+          successMessage: 'Task edited succsessfully'
+
         };
       }
       case 'DELETE_TASK':{
         let taskList = state.taskList.filter(task => { return task._id !== action.id });
         return {
           ...state,
-          taskList
+          loading: false,
+          taskList,
+          successMessage: 'Task deleted succsessfully'
         };
       }
       case 'DELETE_SELECTED':{
         let taskList = state.taskList.filter(task => !action.checkedTasks.has(task._id));
         return {
           ...state,
+          loading: false,
           taskList,
-          sucsessDeleteSelected: true
+          sucsessDeleteSelected: true,
+          successMessage: 'Tasks deleted succsessfully'
+
         };
       }
       case 'SORT_LIST':{
@@ -69,9 +92,6 @@ export default function reducer(state=defaultState, action){
           taskList: action.taskList
         };
       }
-      
-
-      
       default: return state;
     }
 }

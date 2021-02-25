@@ -22,7 +22,6 @@ export default function request(url, method='GET', body){
                     throw new Error('Something went wrong!');
                 }
             }
-            
             return res;
         })
         .catch((error)=>{

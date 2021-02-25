@@ -5,7 +5,7 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import NewTaskOrEdit from './../Components/TodoList/NewTaskOrEdit';
 
 import { connect } from 'react-redux';
-import { getTasks, saveTask, deleteTask } from './../store/actions';
+import { getTasks, getTask, saveTask, deleteTask } from './../store/actions';
 
 import { fromatingDate } from './../helpers/utils';
 
@@ -16,26 +16,18 @@ class SingleTask extends React.Component {
     };
     componentDidMount() {
         const { taskId } = this.props.match.params;
-        this.props.getTasks();
-        const task = this.props.taskList.find(task => task._id === taskId);
-        this.setState({
-            task: task
-        })
+        this.props.getTask(taskId);
     };
     componentDidUpdate(prevProps) {
         if(!prevProps.sucsessSaveOrUpdateTask && this.props.sucsessSaveOrUpdateTask) {
-            const { taskId } = this.props.match.params;
-            const task = this.props.taskList.find(task => task._id === taskId);
             this.setState({
                 showModal: false,
-                task
             });
             return;
         }
     }
     updateTask = (newTask) => {
-        let index = this.props.taskList.findIndex( task => task._id === newTask._id );
-        this.props.updateTask(newTask, index);
+        this.props.updateTask(newTask);
     };
     removeTask = (id) => {
         this.props.deleteTask(id);
@@ -49,7 +41,8 @@ class SingleTask extends React.Component {
 
 
     render() {
-        const { showModal, task } = this.state;
+        const { showModal } = this.state;
+        const { task } = this.props;
 
         return (
             <Container className="TodoList">
@@ -100,12 +93,14 @@ class SingleTask extends React.Component {
 const mapStateToProps = (store) => {
     return {
         taskList: store.taskList,
+        task: store.task,
         sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask
     }
 }
 
 const mapDispatchToProps = {
     getTasks,
+    getTask,
     saveTask,
     deleteTask
 };

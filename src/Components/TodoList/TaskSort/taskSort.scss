@@ -22,5 +22,9 @@
                 cursor: pointer;
             }
         }
+
+        @media screen and (max-width: 456px) {
+            padding: 3px 5px;
+        }
     }
 }

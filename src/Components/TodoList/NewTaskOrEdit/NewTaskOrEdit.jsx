@@ -37,9 +37,8 @@ class NewTaskOrEdit extends React.Component {
     };
 
     saveOrUpdateTask = (newTask) => {
-        let index = this.props.taskList.findIndex( task => task._id === newTask._id );
-        if( index !== -1 ) {//update Task
-            this.props.updateTask(newTask,index);
+        if( newTask._id ) {//update Task
+            this.props.updateTask(newTask);
             return;
         };
         this.props.saveTask(newTask);//new Task
@@ -61,6 +60,7 @@ class NewTaskOrEdit extends React.Component {
             date: fromatingDate( inputValueDate.toISOString() ),
             _id: this.props.task?._id
         };
+        // console.log(newTask);
         this.saveOrUpdateTask(newTask);
     };
     render() {
