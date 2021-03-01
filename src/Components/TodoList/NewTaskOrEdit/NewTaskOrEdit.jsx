@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Col, Button, InputGroup, Form, Modal } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { connect } from 'react-redux';
+
+import { saveTask, updateTask } from './../../../store/actions';
 
 import { fromatingDate } from './../../../helpers/utils';
 
@@ -32,6 +35,15 @@ class NewTaskOrEdit extends React.Component {
             inputValueDate: date || new Date()
         })
     };
+
+    saveOrUpdateTask = (newTask) => {
+        if( newTask._id ) {//update Task
+            this.props.updateTask(newTask);
+            return;
+        };
+        this.props.saveTask(newTask);//new Task
+    };
+
     handleSubmit = (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -41,15 +53,15 @@ class NewTaskOrEdit extends React.Component {
             })
             return;
         }
-        const { saveTask } = this.props;//if this.props.task is not null updateing task else creating new task
-        const { inputValueDate } = this.state;
+        const { inputValueDate, inputValueTitle, inputValueDesc } = this.state;
         const newTask = {
-            title: this.state.inputValueTitle,
-            description: this.state.inputValueDesc,
+            title: inputValueTitle,
+            description: inputValueDesc,
             date: fromatingDate( inputValueDate.toISOString() ),
             _id: this.props.task?._id
         };
-        saveTask(newTask);
+        // console.log(newTask);
+        this.saveOrUpdateTask(newTask);
     };
     render() {
         const { validated, inputValueDesc, inputValueTitle } = this.state;
@@ -128,7 +140,20 @@ NewTaskOrEdit.propTypes = {
     task: PropTypes.object
 }
 
-export default NewTaskOrEdit;
+const mapStateToProps = (store) => {
+    return {
+        taskList: store.taskList
+    }
+}
+
+const mapDispatchToProps = {
+    saveTask,
+    updateTask
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewTaskOrEdit);
+
 
 
 

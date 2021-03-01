@@ -1,34 +1,62 @@
-import React, { memo } from 'react';
+import React from 'react';
 import './taskSort.scss';
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
+
+import { sortTasks } from './../../../store/actions';
 
 const TaskSort = (props) => {
+
+    const sortTasks = ( type = 'up', sortBy ) => {
+        if (!sortBy) {
+            return;
+        }
+        const taskList = [...props.taskList];
+        taskList.sort((a, b) => {
+            if(a[sortBy] > b[sortBy]){
+                return type === 'up' ?  1 : -1;
+            }
+            if(a[sortBy] < b[sortBy]){
+                return type === 'up' ?  -1 : 1;
+            }
+            return 0;
+        });
+        props.sortTasks(taskList);//sending sorted list to redux store
+    }
     return (
         <div className="taskSort">
-            <div className="taskSort-button">
+            <div className="taskSort-buttons">
                 <p> Title 
-                    <span onClick={() => props.sortTasks('dawn', 'title')}>&#x2191;</span>
-                    <span onClick={() => props.sortTasks('up', 'title')}>&#x2193;</span>
+                    <span className="taskSort-buttons-button" onClick={() => sortTasks('dawn', 'title')}>&#x2191;</span>
+                    <span className="taskSort-buttons-button" onClick={() => sortTasks('up', 'title')}>&#x2193;</span>
                 </p>
             </div>
-            <div className="taskSort-button">
+            <div className="taskSort-buttons">
                 <p> Date 
-                    <span onClick={() => props.sortTasks('dawn', 'date')}>&#x2191;</span>
-                    <span onClick={() => props.sortTasks('up', 'date')}>&#x2193;</span>
+                    <span className="taskSort-buttons-button" onClick={() => sortTasks('dawn', 'date')}>&#x2191;</span>
+                    <span className="taskSort-buttons-button" onClick={() => sortTasks('up', 'date')}>&#x2193;</span>
                 </p>
             </div>
-            <div className="taskSort-button">
+            <div className="taskSort-buttons">
                 <p> Status 
-                    <span onClick={() => props.sortTasks('dawn')}>&#x2191;</span>
-                    <span onClick={() => props.sortTasks('up')}>&#x2193;</span>
+                    <span className="taskSort-buttons-button" onClick={() => sortTasks('dawn')}>&#x2191;</span>
+                    <span className="taskSort-buttons-button" onClick={() => sortTasks('up')}>&#x2193;</span>
                 </p>
             </div>
         </div>
     )
 }
 
-TaskSort.propTypes = {
-    sortTasks: PropTypes.func.isRequired
-}
+const mapStateToProps = (store) =>{
+    return {
+        taskList: store.taskList
+    }
+};
 
-export default memo(TaskSort);
+const mapDispatchToProps = {
+    sortTasks
+};
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskSort);
