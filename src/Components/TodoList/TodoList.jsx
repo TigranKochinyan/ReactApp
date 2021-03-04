@@ -8,7 +8,7 @@ import SectioTitle from './../SectionTitle';
 import NewTaskOrEdit from './NewTaskOrEdit';
 import Task from './Task';
 import Confirm from './Confirm';
-import TaskSort from './TaskSort';
+import Search from './Search';
 
 import { 
     getTasks
@@ -122,7 +122,7 @@ class TodoList extends Component {
                         <Button onClick={this.unCheckAllTasks} variant="warning" className="mb-3 mt-3" > Deselect Tasks </Button>
                     </Col>
                 </Row>
-                <TaskSort />
+                <Search />
                 <Row>
                     {tasks}
                 </Row>

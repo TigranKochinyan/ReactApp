@@ -30,8 +30,8 @@ class SingleTask extends React.Component {
         this.props.updateTask(newTask);
     };
     removeTask = (id) => {
-        this.props.deleteTask(id);
-        this.props.history.push('/');
+        this.props.deleteTask(id, 'single');
+        // this.props.history.push('/');//
     };
     closeModal = () => {
         this.setState({

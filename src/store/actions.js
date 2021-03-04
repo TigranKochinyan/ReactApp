@@ -1,5 +1,6 @@
 import request from '../helpers/request';
 import * as actionTypes from './actionTypes';
+import {history} from './../helpers/history';
 
 export const getTasks = () => {
     return (dispatch) => {
@@ -52,11 +53,15 @@ export const updateTask = (updatedTask, index) => {
         });
     }
 };
-export const deleteTask = (id) => {
+export const deleteTask = (id, from) => {
     return (dispatch) => {
         request(`http://localhost:3001/task/${id}`, 'DELETE')
         .then((res)=>{
             dispatch({type: actionTypes.DELETE_TASK, id});
+            if(from === 'single') {
+                history.push('/');
+                window.location = '/';//because history push is not working corect, but page is reloading
+            }
         })
         .catch(err => {
             dispatch({type: actionTypes.ERROR, message: err.message})

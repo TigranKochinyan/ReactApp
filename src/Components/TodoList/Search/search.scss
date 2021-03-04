@@ -1,0 +1,33 @@
+.search {
+    &-accordion {
+
+        &-card {
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            overflow: visible !important;
+
+            .card-header {
+                background-color: transparent;
+            }
+
+            .card-body {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+
+
+                input {
+                    border: 1px solid rgba(0,0,0,.125);
+                }
+            }
+
+            &-dropdown {
+                div {
+                    margin: 1px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
