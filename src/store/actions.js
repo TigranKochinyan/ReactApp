@@ -2,14 +2,25 @@ import request from '../helpers/request';
 import * as actionTypes from './actionTypes';
 import {history} from './../helpers/history';
 
-export const getTasks = () => {
-    return (dispatch) => {
-        dispatch({type: actionTypes.PENDING});
+const apiHost = process.env.REACT_APP_API_HOST;//catching this, add .env file;
 
-        request('http://localhost:3001/task')
-        .then((tasks)=>{
-            dispatch({type: actionTypes.GET_TASKS, tasks: tasks});
-        });
+export function getTasks(params={}) {
+
+    const query = Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&');
+    console.log('dispatch', apiHost);
+    return (dispatch) => {
+        dispatch({ type: actionTypes.PENDING });
+
+        request(`http://localhost:3001/task?${query}`)
+            .then((tasks) => {
+                dispatch({ type: actionTypes.GET_TASKS, tasks: tasks });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
     }
 };
 
@@ -26,7 +37,6 @@ export const getTask = (id) => {
         });
     }
 };
-
 export const saveTask = (task) => {
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});

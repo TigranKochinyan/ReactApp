@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { saveTask, updateTask } from './../../../store/actions';
 
-import { fromatingDate } from './../../../helpers/utils';
+import { formatingDate } from './../../../helpers/utils';
 
 class NewTaskOrEdit extends React.Component {
     constructor(props) {
@@ -57,7 +57,7 @@ class NewTaskOrEdit extends React.Component {
         const newTask = {
             title: inputValueTitle,
             description: inputValueDesc,
-            date: fromatingDate( inputValueDate.toISOString() ),
+            date: formatingDate( inputValueDate.toISOString() ),
             _id: this.props.task?._id
         };
         // console.log(newTask);

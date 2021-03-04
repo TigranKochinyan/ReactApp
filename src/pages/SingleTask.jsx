@@ -7,7 +7,7 @@ import NewTaskOrEdit from './../Components/TodoList/NewTaskOrEdit';
 import { connect } from 'react-redux';
 import { getTasks, getTask, saveTask, deleteTask } from './../store/actions';
 
-import { fromatingDate } from './../helpers/utils';
+import { formatingDate } from './../helpers/utils';
 
 class SingleTask extends React.Component {
     state = {
@@ -56,7 +56,7 @@ class SingleTask extends React.Component {
                                         Description: {task.description}
                                     </Card.Text>
                                     <Card.Text>
-                                        date: {fromatingDate(task.date)}
+                                        date: {formatingDate(task.date)}
                                     </Card.Text>
                                     <Button
                                         className="icon-in-button"
