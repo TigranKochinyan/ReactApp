@@ -10,7 +10,7 @@ import { deleteTask } from './../../../store/actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { fromatingDate, cutText } from './../../../helpers/utils';
+import { formatingDate, cutText } from './../../../helpers/utils';
 
 const Task = (props) => {
     const { task, checkTask, editTask, deleteTask, disabled, checked } = props;
@@ -34,7 +34,7 @@ const Task = (props) => {
                     Description: {cutText(task.description)}
                 </Card.Text>
                 <Card.Text>
-                    date: {fromatingDate(task.date)}
+                    date: {formatingDate(task.date)}
                 </Card.Text>
                 <Button
                     className="icon-in-button"

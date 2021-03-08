@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { InputGroup, Button, FormControl, DropdownButton, Dropdown, Accordion, Card } from 'react-bootstrap';
-import { cutText, textTransform } from './../../../helpers/utils';
+import { cutText, textTransform, formatingDate } from './../../../helpers/utils';
 import DatePicker from "react-datepicker";
+import { getTasks } from './../../../store/actions';
+
 import "react-datepicker/dist/react-datepicker.css";
 import './search.scss';
+
 
 const statusOptions = [ '', 'active', 'done'];
 const sortOptions = [
@@ -41,13 +44,24 @@ const Search = (props) => {
             [name]: value
         });
     };
-
     const handleSubmit = ()=>{
-        console.log('search', search);
-        console.log('sort', sort);
-        console.log('status', status);
-        console.log('dates', dates);
+        const params = {};
 
+        search && (params.search = search);
+        sort && (params.sort = sort);
+        status && (params.status = status);
+
+
+       for(let key in dates){
+           const value = dates[key];
+           if(value){
+            const date = formatingDate(value.toISOString());
+            params[key] = date;
+           }
+
+       }
+       console.log('search',params);
+       props.getTasks(params);
     };
 
     const dropdownsArr = dateOptions.map((option, index)=>(
@@ -146,4 +160,16 @@ const Search = (props) => {
     )
 };
 
-export default connect()(Search);
+// const mapStateToProps = (store) => {
+//     return {
+//         taskList: store.taskList,
+//         sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask,
+//         sucsessDeleteSelected: store.sucsessDeleteSelected
+//     }
+// }
+
+const mapDispatchToProps = {
+    getTasks
+};
+
+export default connect(null, mapDispatchToProps)(Search);

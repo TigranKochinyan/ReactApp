@@ -2,14 +2,24 @@ import request from '../helpers/request';
 import * as actionTypes from './actionTypes';
 import {history} from './../helpers/history';
 
-export const getTasks = () => {
-    return (dispatch) => {
-        dispatch({type: actionTypes.PENDING});
+const apiHost = process.env.REACT_APP_API_HOST;
 
-        request('http://localhost:3001/task')
-        .then((tasks)=>{
-            dispatch({type: actionTypes.GET_TASKS, tasks: tasks});
-        });
+export function getTasks(params={}) {
+
+    const query = Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&');
+    return (dispatch) => {
+        dispatch({ type: actionTypes.PENDING });
+
+        request(`${apiHost}/task?${query}`)
+            .then((tasks) => {
+                dispatch({ type: actionTypes.GET_TASKS, tasks: tasks });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
     }
 };
 
@@ -17,7 +27,7 @@ export const getTask = (id) => {
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
 
-        request(`http://localhost:3001/task/${id}`)
+        request(`${apiHost}/task/${id}`)
         .then((task)=>{
             dispatch({type: 'GET_TASK', task: task});
         })
@@ -26,12 +36,11 @@ export const getTask = (id) => {
         });
     }
 };
-
 export const saveTask = (task) => {
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
 
-        request('http://localhost:3001/task', 'POST', task)
+        request(`${apiHost}/task`, 'POST', task)
         .then((task)=>{
             dispatch({type: actionTypes.ADD_TASK, task: task});
         })
@@ -44,7 +53,7 @@ export const updateTask = (updatedTask, index) => {
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
 
-        request(`http://localhost:3001/task/${updatedTask._id}`, 'PUT', updatedTask)
+        request(`${apiHost}/task/${updatedTask._id}`, 'PUT', updatedTask)
         .then((task)=>{
             dispatch({type: actionTypes.UPDATE_TASK, updatedTask});
         })
@@ -55,7 +64,7 @@ export const updateTask = (updatedTask, index) => {
 };
 export const deleteTask = (id, from) => {
     return (dispatch) => {
-        request(`http://localhost:3001/task/${id}`, 'DELETE')
+        request(`${apiHost}/task/${id}`, 'DELETE')
         .then((res)=>{
             dispatch({type: actionTypes.DELETE_TASK, id});
             if(from === 'single') {
@@ -72,17 +81,12 @@ export const deleteSelected = (requestBody, checkedTasks) => {
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
 
-        request(`http://localhost:3001/task`, 'PATCH', requestBody)
+        request(`${apiHost}/task`, 'PATCH', requestBody)
         .then((res)=>{
             dispatch({type: actionTypes.DELETE_SELECTED, checkedTasks});
         })
         .catch(err => {
             dispatch({type: actionTypes.ERROR, message: err.message})
         });
-    }
-};
-export const sortTasks = (taskList) => {
-    return (dispatch) => {
-        dispatch({type: actionTypes.SORT_LIST, taskList});
     }
 };
