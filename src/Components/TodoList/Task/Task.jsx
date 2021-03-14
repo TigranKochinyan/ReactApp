@@ -5,10 +5,10 @@ import './task.scss';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { deleteTask } from './../../../store/actions';
+import { deleteTask, updateTask } from './../../../store/actions';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faCheck, faRedo } from '@fortawesome/free-solid-svg-icons';
 
 import { formatingDate, cutText } from './../../../helpers/utils';
 
@@ -34,6 +34,9 @@ const Task = (props) => {
                     Description: {cutText(task.description)}
                 </Card.Text>
                 <Card.Text>
+                    Created at: {formatingDate(task.created_at)}
+                </Card.Text>
+                <Card.Text>
                     date: {formatingDate(task.date)}
                 </Card.Text>
                 <Button
@@ -52,6 +55,31 @@ const Task = (props) => {
                 >
                     <FontAwesomeIcon icon={ faEdit } />
                 </Button>
+                {
+                    task.status === 'active' ?
+                        <Button
+                            className="icon-in-button ml-1"
+                            onClick={() => props.updateTask({
+                                _id: task._id,
+                                status: 'done'
+                            })}
+                            variant="outline-success"
+                            disabled={disabled}
+                        >
+                            <FontAwesomeIcon icon={ faCheck } />
+                        </Button> :
+                        <Button
+                            className="icon-in-button ml-1"
+                            onClick={() => props.updateTask({
+                                _id: task._id,
+                                status: 'active'
+                            })}
+                            variant="outline-secondary"
+                            disabled={disabled}
+                        >
+                            <FontAwesomeIcon icon={ faRedo } />
+                        </Button>
+                }
             </Card.Body>
         </Card>
     )
@@ -67,6 +95,7 @@ Task.propTypes = {
 
 const mapDispatchToProps = {
     deleteTask,
+    updateTask
 };
 
 export default connect(null, mapDispatchToProps)(Task);

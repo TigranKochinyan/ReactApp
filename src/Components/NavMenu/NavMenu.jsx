@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './navMenu.scss';
 
 const NavMenu = () => {
@@ -12,8 +12,8 @@ const NavMenu = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="ml-auto">
-                    <Link className="navMenu-link" to="/contact"> Contact Us </Link>
-                    <Link className="navMenu-link" to="/about"> About </Link>
+                    <NavLink activeClassName="navMenu-active-link" className="navMenu-link" to="/contact"> Contact Us </NavLink>
+                    <NavLink activeClassName="navMenu-active-link" className="navMenu-link" to="/about"> About </NavLink>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

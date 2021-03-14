@@ -53,16 +53,21 @@ export default function reducer(state=defaultState, action){
         };
       }
       case 'UPDATE_TASK':{
+        let successMessage = 'Task edited succsessfully';
+        successMessage = action.updatedTask.status === 'done' ?  'Task is done' : 'Task is active';
         const taskList = [...state.taskList];
         const updetedTaskIndex = taskList.findIndex((task) => action.updatedTask._id === task._id);
-        taskList[updetedTaskIndex] = action.updatedTask;
+        taskList[updetedTaskIndex] =  {
+          ...taskList[updetedTaskIndex],
+          ...action.updatedTask
+        };
         return {
           ...state,
           loading: false,
           task: action.updatedTask,
           taskList,
           sucsessSaveOrUpdateTask: true,
-          successMessage: 'Task edited succsessfully'
+          successMessage
 
         };
       }

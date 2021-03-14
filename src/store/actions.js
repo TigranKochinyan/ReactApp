@@ -49,7 +49,7 @@ export const saveTask = (task) => {
         });
     }
 };
-export const updateTask = (updatedTask, index) => {
+export const updateTask = (updatedTask) => {
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
 
@@ -58,7 +58,7 @@ export const updateTask = (updatedTask, index) => {
             dispatch({type: actionTypes.UPDATE_TASK, updatedTask});
         })
         .catch(err => {
-            dispatch({type: actionTypes.ERROR, message: err.message})
+            dispatch({type: actionTypes.ERROR, message: err.message});
         });
     }
 };

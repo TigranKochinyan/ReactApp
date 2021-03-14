@@ -18,6 +18,10 @@ import SingleTask from './pages/SingleTask';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
+import Register from './pages/Register';
+import Login from './pages/Login';
+
+
 import Spinner from './Components/Spinner';
 
 
@@ -63,6 +67,12 @@ function App({ successMessage, errorMessage, loading }) {
 						<Contact />
 					</Route>
 					<Route exact path="/task/:taskId" component={SingleTask} />
+					<Route exact path="/signin">
+						<Login />
+					</Route>
+					<Route exact path="/signup">
+						<Register />
+					</Route>
 					<Route exact path="/not-found">
 						<NotFound />
 					</Route>
