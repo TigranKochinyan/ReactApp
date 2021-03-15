@@ -1,6 +1,9 @@
 .navMenu {
     &-link {
         padding: 5px;
+        &:hover {
+            text-decoration: none;
+        }
     }
     &-active-link {
         color: aqua;
