@@ -6,6 +6,9 @@ import './navMenu.scss';
 const NavMenu = () => {
     const [navMenuShow, setNavMenuShow] = useState(false)
     const showHideNavMenu = () => {
+        if(window.innerWidth > 992) {
+            return;
+        }
         setNavMenuShow(!navMenuShow);
     };
     return (
