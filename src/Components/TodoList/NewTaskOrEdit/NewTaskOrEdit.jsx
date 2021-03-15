@@ -117,8 +117,6 @@ class NewTaskOrEdit extends React.Component {
                                 selected={ this.state.inputValueDate }
                                 onChange={ this.handleDateChange }
                                 name="inputValueDate"
-                                // showTimeSelect
-                                // dateFormat="Pp"
                                 minDate={ new Date() }
                                 />
                             </Form.Group>

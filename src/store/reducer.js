@@ -52,11 +52,15 @@ export default function reducer(state=defaultState, action){
           successMessage: 'Task created succsessfully'
         };
       }
-      case 'UPDATE_TASK':{
+      case 'UPDATE_TASK':{//edit this, 'from single' add maybe
         let successMessage = 'Task edited succsessfully';
         successMessage = action.updatedTask.status === 'done' ?  'Task is done' : 'Task is active';
         const taskList = [...state.taskList];
         const updetedTaskIndex = taskList.findIndex((task) => action.updatedTask._id === task._id);
+        const task = {
+          ...state.task,
+          ...action.updatedTask
+        };
         taskList[updetedTaskIndex] =  {
           ...taskList[updetedTaskIndex],
           ...action.updatedTask
@@ -64,7 +68,7 @@ export default function reducer(state=defaultState, action){
         return {
           ...state,
           loading: false,
-          task: action.updatedTask,
+          task,
           taskList,
           sucsessSaveOrUpdateTask: true,
           successMessage
