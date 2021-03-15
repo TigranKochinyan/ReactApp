@@ -1,3 +1,5 @@
+import { isAuthentificate } from './../helpers/storage';
+
 const defaultState = { 
     taskList: [],
     task: null,
@@ -5,7 +7,8 @@ const defaultState = {
     sucsessDeleteSelected: false,
     loading: false,
     successMessage: null, 
-    errorMessage: null
+    errorMessage: null,
+    isAuthentificate: isAuthentificate()
 };
 
 
@@ -52,7 +55,7 @@ export default function reducer(state=defaultState, action){
           successMessage: 'Task created succsessfully'
         };
       }
-      case 'UPDATE_TASK':{//edit this, 'from single' add maybe
+      case 'UPDATE_TASK':{//edit this, add 'from single' maybe
         let successMessage = 'Task edited succsessfully';
         successMessage = action.updatedTask.status === 'done' ?  'Task is done' : 'Task is active';
         const taskList = [...state.taskList];
@@ -101,6 +104,22 @@ export default function reducer(state=defaultState, action){
           taskList: action.taskList
         };
       }
+      case 'LOGIN_SUCCSESS':{//not working
+        return {
+          ...state,
+          loading: false,
+          isAuthentificate: true,
+          successMessage: 'logined succsessfully'
+
+        };
+      }
+      case 'REGISTER_SUCCSESS':{//not working
+        return {
+          ...state,
+          isAuthentificate: true
+        };
+      }
+      
       default: return state;
     }
 }

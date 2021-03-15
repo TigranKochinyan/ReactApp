@@ -87,8 +87,6 @@ function App({ successMessage, errorMessage, loading }) {
   	);
 }
 
-
-//connect1
 const mapStateToProps = (store) => {
     return {
 		loading: store.loading,
@@ -96,6 +94,5 @@ const mapStateToProps = (store) => {
 		successMessage: store.successMessage
     }
 }
-
 
 export default connect(mapStateToProps)(App);

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import './pages.scss';
+import { connect }  from 'react-redux';
+import { 
+    register
+} from './../store/actions';
 
-const Register = () => {
+const Register = (props) => {
     const [ inputValues, setInputValues ] = useState({
         inputName: '',
         inputSurname: '',
@@ -46,6 +50,16 @@ const Register = () => {
         }
         if(!errorExist && !inputValuesEmpty){
             console.log(inputValues);//
+            let sendData = {
+                email: inputValues.inputEmail,
+                password: inputValues.inputPassword,
+                confirmPassword: inputValues.inputConfirmPassword,
+                name: inputValues.inputName,
+                surname: inputValues.inputSurname, 
+            }
+            console.log(sendData);
+            props.register(sendData)
+
         };
     };
 
@@ -164,4 +178,10 @@ const Register = () => {
     );
 };
 
-export default Register;
+
+const mapDispatchToProps = {
+    register
+};
+
+
+export default connect(null, mapDispatchToProps)(Register);

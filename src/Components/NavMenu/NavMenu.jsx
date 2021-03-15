@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import './navMenu.scss';
 
-const NavMenu = () => {
+
+const NavMenu = ({ isAuthentificate }) => {
     const [navMenuShow, setNavMenuShow] = useState(false)
     const showHideNavMenu = (showOrHide) => {
         if(window.innerWidth > 992) {
@@ -21,12 +24,27 @@ const NavMenu = () => {
                 <Nav className="ml-auto">
                     <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/contact"> Contact Us </NavLink>
                     <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/about"> About </NavLink>
-                    <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign in </NavLink>
-                    <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signup"> Sign Up </NavLink>
+                    {
+                        isAuthentificate ? 
+                            <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signout"> Sign Out </NavLink>
+                            :
+                            <>        
+                            <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign in </NavLink>
+                            <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signup"> Sign Up </NavLink>
+                            </> 
+                        
+                    }
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
     );
 };
 
-export default NavMenu;
+const mapStateToProps = (store) => {
+    return {
+        isAuthentificate: store.isAuthentificate
+    }
+}
+
+
+export default connect(mapStateToProps)(NavMenu);

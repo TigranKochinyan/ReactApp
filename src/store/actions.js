@@ -1,6 +1,7 @@
 import request from '../helpers/request';
 import * as actionTypes from './actionTypes';
 import {history} from './../helpers/history';
+import { addTokenToLocalStorage } from './../helpers/storage';
 
 const apiHost = process.env.REACT_APP_API_HOST;
 
@@ -28,12 +29,12 @@ export const getTask = (id) => {
         dispatch({type: actionTypes.PENDING});
 
         request(`${apiHost}/task/${id}`)
-        .then((task)=>{
-            dispatch({type: 'GET_TASK', task: task});
-        })
-        .catch(err => {
-            dispatch({type: actionTypes.ERROR, message: err.message});
-        });
+            .then((task)=>{
+                dispatch({type: 'GET_TASK', task: task});
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+            });
     }
 };
 export const saveTask = (task) => {
@@ -41,12 +42,12 @@ export const saveTask = (task) => {
         dispatch({type: actionTypes.PENDING});
 
         request(`${apiHost}/task`, 'POST', task)
-        .then((task)=>{
-            dispatch({type: actionTypes.ADD_TASK, task: task});
-        })
-        .catch(err => {
-            dispatch({type: actionTypes.ERROR, message: err.message});
-        });
+            .then((task)=>{
+                dispatch({type: actionTypes.ADD_TASK, task: task});
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+            });
     }
 };
 export const updateTask = (updatedTask) => {//
@@ -54,27 +55,27 @@ export const updateTask = (updatedTask) => {//
         dispatch({type: actionTypes.PENDING});
 
         request(`${apiHost}/task/${updatedTask._id}`, 'PUT', updatedTask)
-        .then((task)=>{
-            dispatch({type: actionTypes.UPDATE_TASK, updatedTask});
-        })
-        .catch(err => {
-            dispatch({type: actionTypes.ERROR, message: err.message});
-        });
+            .then((task)=>{
+                dispatch({type: actionTypes.UPDATE_TASK, updatedTask});
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+            });
     }
 };
 export const deleteTask = (id, from) => {
     return (dispatch) => {
         request(`${apiHost}/task/${id}`, 'DELETE')
-        .then((res)=>{
-            dispatch({type: actionTypes.DELETE_TASK, id});
-            if(from === 'single') {
-                history.push('/');
-                window.location = '/';//because history push is not working corect, but page is reloading
-            }
-        })
-        .catch(err => {
-            dispatch({type: actionTypes.ERROR, message: err.message})
-        });
+            .then((res)=>{
+                dispatch({type: actionTypes.DELETE_TASK, id});
+                if(from === 'single') {
+                    history.push('/');
+                    window.location = '/';//because history push is not working corect, but page is reloading
+                }
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+            });
     }
 };
 export const deleteSelected = (requestBody, checkedTasks) => {
@@ -82,11 +83,64 @@ export const deleteSelected = (requestBody, checkedTasks) => {
         dispatch({type: actionTypes.PENDING});
 
         request(`${apiHost}/task`, 'PATCH', requestBody)
-        .then((res)=>{
-            dispatch({type: actionTypes.DELETE_SELECTED, checkedTasks});
-        })
-        .catch(err => {
-            dispatch({type: actionTypes.ERROR, message: err.message})
-        });
+            .then((res)=>{
+                dispatch({type: actionTypes.DELETE_SELECTED, checkedTasks});
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message})
+            });
     }
 };
+
+export const login = (data) => {//login password
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING});
+
+        request(`${apiHost}/user/sign-in`, 'POST', data)
+            .then( token => {//back end is not responsed this request yet
+                console.log(token);
+                addTokenToLocalStorage(token);
+                dispatch({type: actionTypes.LOGIN_SUCCSESS}); // add token to localStorage 
+                history.push('/');                            // and redirect to home page
+                // window.location = '/'
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+            });
+    };
+};
+
+export const register = (data) => {//login(email) password, name, surname, 
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING});
+
+        request(`${apiHost}/user`, 'POST', data)
+            .then( token => {//back end is not responsed this request yet
+                console.log(token);
+                // addTokenToLocalStorage(token);
+                dispatch({type: actionTypes.LOGIN_SUCCSESS}); // add token to localStorage 
+                //history.push('/');                            // and redirect to home page
+                
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+            });
+    }
+};
+
+// export const logOut = (data) => {//jwt -> {jwt : 'jwt string'}
+//     return (dispatch) => {
+//         dispatch({type: actionTypes.PENDING});
+
+//         request(`${apiHost}/user/sign-out`, 'POST', data)
+//             .then( token => {//back end is not responsed this request yet
+//                 console.log(token);
+//                 // dispatch({type: actionTypes.SIGNOUT_SUCCESS}); // delete token to localStorage 
+//                 //history.push('/');                            // and redirect to sign in page
+                
+//             })
+//             .catch(err => {
+//                 dispatch({type: actionTypes.ERROR, message: err.message});
+//             });
+//     }
+// };

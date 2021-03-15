@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import './pages.scss';
+import { connect } from 'react-redux';
+import { login } from './../store/actions'
 
-const Login = () => {
+const Login = (props) => {
     const [ inputValues, setInputValues ] = useState({
         inputPassword: '',
         inputEmail: ''
@@ -37,6 +39,10 @@ const Login = () => {
         }
         if(!errorExist && !inputValuesEmpty){
             console.log(inputValues);//fetch data to server
+            props.login({
+                email: inputValues.inputEmail,
+                password: inputValues.inputPassword
+            })
         };
     };
 
@@ -109,4 +115,11 @@ const Login = () => {
     );
 };
 
-export default Login;
+
+
+const mapDispatchToProps = {
+    login
+};
+
+
+export default connect(null, mapDispatchToProps)(Login);
