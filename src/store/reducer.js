@@ -116,7 +116,19 @@ export default function reducer(state=defaultState, action){
       case 'REGISTER_SUCCSESS':{//not working
         return {
           ...state,
-          isAuthentificate: true
+          isAuthentificate: true,
+          loading: false,
+          successMessage: 'You are register succsessfully'
+
+        };
+      }
+      case 'SIGN_OUT':{//not working
+        return {
+          ...state,
+          isAuthentificate: false,
+          loading: false,
+          successMessage: 'You are signed out'
+
         };
       }
       

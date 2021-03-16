@@ -1,7 +1,7 @@
 import request from '../helpers/request';
 import * as actionTypes from './actionTypes';
 import {history} from './../helpers/history';
-import { addTokenToLocalStorage } from './../helpers/storage';
+import { addTokenToLocalStorage, getToken } from './../helpers/storage';
 
 const apiHost = process.env.REACT_APP_API_HOST;
 
@@ -102,7 +102,7 @@ export const login = (data) => {//login password
                 addTokenToLocalStorage(token);
                 dispatch({type: actionTypes.LOGIN_SUCCSESS}); // add token to localStorage 
                 history.push('/');                            // and redirect to home page
-                // window.location = '/'
+                window.location = '/'
             })
             .catch(err => {
                 dispatch({type: actionTypes.ERROR, message: err.message});
@@ -118,9 +118,9 @@ export const register = (data) => {//login(email) password, name, surname,
             .then( token => {//back end is not responsed this request yet
                 console.log(token);
                 // addTokenToLocalStorage(token);
-                dispatch({type: actionTypes.LOGIN_SUCCSESS}); // add token to localStorage 
-                //history.push('/');                            // and redirect to home page
-                
+                dispatch({type: actionTypes.REGISTER_SUCCSESS}); // add token to localStorage 
+                history.push('/login');                            // and redirect to home page
+                window.location = '/signin'
             })
             .catch(err => {
                 dispatch({type: actionTypes.ERROR, message: err.message});
@@ -128,19 +128,20 @@ export const register = (data) => {//login(email) password, name, surname,
     }
 };
 
-// export const logOut = (data) => {//jwt -> {jwt : 'jwt string'}
-//     return (dispatch) => {
-//         dispatch({type: actionTypes.PENDING});
+export const signout = () => {//jwt -> {jwt : 'jwt string'}
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING});
 
-//         request(`${apiHost}/user/sign-out`, 'POST', data)
-//             .then( token => {//back end is not responsed this request yet
-//                 console.log(token);
-//                 // dispatch({type: actionTypes.SIGNOUT_SUCCESS}); // delete token to localStorage 
-//                 //history.push('/');                            // and redirect to sign in page
+        request(`${apiHost}/user/sign-out`, 'POST', getToken())
+            .then( token => {//back end is not responsed this request yet
+                console.log(token);
+                dispatch({type: actionTypes.SIGN_OUT}); // add token to localStorage 
+                history.push('/');                            // and redirect to sign in page
+                window.location = '/signin'
                 
-//             })
-//             .catch(err => {
-//                 dispatch({type: actionTypes.ERROR, message: err.message});
-//             });
-//     }
-// };
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+            });
+    }
+};

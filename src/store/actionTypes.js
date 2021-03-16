@@ -8,6 +8,6 @@ export const SORT_LIST = 'SORT_LIST';
 export const DELETE_SELECTED = 'DELETE_SELECTED';
 export const LOGIN_SUCCSESS = 'LOGIN_SUCCSESS';
 export const REGISTER_SUCCSESS = 'REGISTER_SUCCSESS';
-export const SIGNOUT_SUCCESS = 'SIGNOUT_SUCCESS';
+export const SIGN_OUT = 'SIGN_OUT';
 export const PENDING = 'PENDING';
 

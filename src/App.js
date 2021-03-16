@@ -20,12 +20,27 @@ import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
 import Login from './pages/Login';
-
-
 import Spinner from './Components/Spinner';
 
 
-function App({ successMessage, errorMessage, loading }) {
+
+
+const AuthRoute = ({path, component, isAuth, children}) => {
+	console.log(component, children);
+	if(!isAuth) {
+		return <Redirect to="/signup" />
+	}
+	return (
+		<Route exact path={path}>
+			{
+				component || children
+			}
+		</Route>
+	)
+}
+
+
+function App({ successMessage, errorMessage, loading, isAuthentificate }) {
 
 	useEffect(() => {
 
@@ -57,16 +72,16 @@ function App({ successMessage, errorMessage, loading }) {
 			<Router>
 				<NavMenu />
 				<Switch>
-					<Route exact path="/">
+					<AuthRoute exact path="/" isAuth={isAuthentificate}>
 						<TodoList />
-					</Route>
+					</AuthRoute>
 					<Route exact path="/about">
 						<About />
 					</Route>
 					<Route exact path="/contact">
 						<Contact />
 					</Route>
-					<Route exact path="/task/:taskId" component={SingleTask} />
+					<AuthRoute exact path="/task/:taskId" isAuth={isAuthentificate} component={SingleTask} />
 					<Route exact path="/signin">
 						<Login />
 					</Route>
@@ -91,7 +106,8 @@ const mapStateToProps = (store) => {
     return {
 		loading: store.loading,
 		errorMessage: store.errorMessage,
-		successMessage: store.successMessage
+		successMessage: store.successMessage,
+		isAuthentificate: store.isAuthentificate
     }
 }
 
