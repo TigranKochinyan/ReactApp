@@ -3,10 +3,12 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { signout } from './../../store/actions';
+
 import './navMenu.scss';
 
 
-const NavMenu = ({ isAuthentificate }) => {
+const NavMenu = ({ isAuthentificate, signout }) => {
     const [navMenuShow, setNavMenuShow] = useState(false)
     const showHideNavMenu = (showOrHide) => {
         if(window.innerWidth > 992) {
@@ -26,7 +28,8 @@ const NavMenu = ({ isAuthentificate }) => {
                     <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/about"> About </NavLink>
                     {
                         isAuthentificate ? 
-                            <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign Out </NavLink>
+                            <button onClick={signout}>sign out</button>
+                            // <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign Out </NavLink>
                             :
                             <>        
                             <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign in </NavLink>
@@ -44,7 +47,11 @@ const mapStateToProps = (store) => {
     return {
         isAuthentificate: store.isAuthentificate
     }
+};
+
+const mapDispatchToProps = {
+    signout
 }
 
 
-export default connect(mapStateToProps)(NavMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);

@@ -21,23 +21,7 @@ import NotFound from './pages/NotFound';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Spinner from './Components/Spinner';
-
-
-
-
-const AuthRoute = ({path, component, isAuth, children}) => {
-	console.log(component, children);
-	if(!isAuth) {
-		return <Redirect to="/signup" />
-	}
-	return (
-		<Route exact path={path}>
-			{
-				component || children
-			}
-		</Route>
-	)
-}
+import AuthRoute from './Components/AuthRoute';
 
 
 function App({ successMessage, errorMessage, loading, isAuthentificate }) {
@@ -72,25 +56,37 @@ function App({ successMessage, errorMessage, loading, isAuthentificate }) {
 			<Router>
 				<NavMenu />
 				<Switch>
-					<AuthRoute exact path="/" isAuth={isAuthentificate}>
-						<TodoList />
-					</AuthRoute>
-					<Route exact path="/about">
-						<About />
-					</Route>
-					<Route exact path="/contact">
-						<Contact />
-					</Route>
-					<AuthRoute exact path="/task/:taskId" isAuth={isAuthentificate} component={SingleTask} />
-					<Route exact path="/signin">
-						<Login />
-					</Route>
-					<Route exact path="/signup">
-						<Register />
-					</Route>
-					<Route exact path="/not-found">
-						<NotFound />
-					</Route>
+					<AuthRoute 
+						exact 
+						path="/" 
+						type='private' 
+						isAuth={isAuthentificate} 
+						component={TodoList} 
+					/>
+					<AuthRoute 
+						exact 
+						path="/task/:taskId" 
+						type='private' 
+						isAuth={isAuthentificate} 
+						component={SingleTask} 
+					/>
+					<AuthRoute 
+						exact 
+						type='public'
+						path="/signin"
+						isAuth={isAuthentificate}
+						component={Login}
+					/>
+					<AuthRoute
+						exact
+						type='public' 
+						path="/signup"
+						isAuth={isAuthentificate}
+						component={Register}
+					/>
+					<Route exact path="/about" component={About} />
+					<Route exact path="/contact" component={Contact} />
+					<Route exact path="/not-found" component={NotFound} />
 					<Redirect to="/not-found" />
 				</Switch>
 			</Router>

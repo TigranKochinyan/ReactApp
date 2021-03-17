@@ -1,4 +1,4 @@
-import { isAuthentificate } from './../helpers/storage';
+import { isAuthentificate } from './../helpers/auth';
 
 const defaultState = { 
     taskList: [],

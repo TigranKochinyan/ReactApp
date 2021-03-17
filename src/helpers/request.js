@@ -1,8 +1,11 @@
+import { getToken } from './auth';
+
 export default function request(url, method='GET', body){
     const config = {
         method: method,
         headers: {
-            "Content-Type": 'application/json'
+            "Content-Type": 'application/json',
+            "Authorization": `Bearer ${getToken()}`
         }
     };
 

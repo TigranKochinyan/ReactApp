@@ -1,7 +1,7 @@
 import request from '../helpers/request';
 import * as actionTypes from './actionTypes';
 import {history} from './../helpers/history';
-import { addTokenToLocalStorage, getToken } from './../helpers/storage';
+import { addTokenToLocalStorage, getToken, removeToken } from './../helpers/auth';
 
 const apiHost = process.env.REACT_APP_API_HOST;
 
@@ -131,10 +131,9 @@ export const register = (data) => {//login(email) password, name, surname,
 export const signout = () => {//jwt -> {jwt : 'jwt string'}
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
-
-        request(`${apiHost}/user/sign-out`, 'POST', getToken())
-            .then( token => {//back end is not responsed this request yet
-                console.log(token);
+        request(`${apiHost}/user/sign-out`, 'POST', {jwt: getToken()})
+            .then( token => {
+                removeToken();//
                 dispatch({type: actionTypes.SIGN_OUT}); // add token to localStorage 
                 history.push('/');                            // and redirect to sign in page
                 window.location = '/signin'
