@@ -60,7 +60,6 @@ const Search = (props) => {
            }
 
        }
-       console.log('search',params);
        props.getTasks(params);
     };
 

@@ -39,7 +39,7 @@ const Contact = () => {
             return;
         }
         if(!errorExist && !inputValuesEmpty){
-            fetch('http://localhost:3001/form', {
+            fetch('http://localhost:3001/form', {//fetch@ hanellllll
                 method: 'POST',
                 headers: {
                     "Content-Type": 'application/json'
@@ -60,7 +60,6 @@ const Contact = () => {
                         throw new Error('Something went wrong!');
                     }
                 }
-                console.log(response);//
                 setInputValues({
                     inputName: '',
                     inputEmail: '',
@@ -76,7 +75,6 @@ const Contact = () => {
 
     const validator = (name, value) => {
         if(name === 'inputEmail' && !(new RegExp(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)).test(value)){
-            // console.log('invalid email');
             setInputsIsValid({
                 ...inputsIsValid,
                 [name]: 'Please entet valid email'
@@ -84,8 +82,6 @@ const Contact = () => {
             return;
         }
         if(value.trim() === '') {//should optimization
-            // console.log('invalid text or name');
-
             setInputsIsValid({
                 ...inputsIsValid,
                 [name]: 'is required'

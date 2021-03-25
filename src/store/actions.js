@@ -1,6 +1,7 @@
 import request from '../helpers/request';
 import * as actionTypes from './actionTypes';
 import {history} from './../helpers/history';
+import requestWithoutToken from './../helpers/auth';
 import { addTokenToLocalStorage, getToken, removeToken } from './../helpers/auth';
 
 const apiHost = process.env.REACT_APP_API_HOST;
@@ -96,13 +97,11 @@ export const login = (data) => {//login password
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
 
-        request(`${apiHost}/user/sign-in`, 'POST', data)
-            .then( token => {//back end is not responsed this request yet
-                console.log(token);
+        requestWithoutToken(`${apiHost}/user/sign-in`, 'POST', data)
+            .then( token => {
                 addTokenToLocalStorage(token);
                 dispatch({type: actionTypes.LOGIN_SUCCSESS}); // add token to localStorage 
                 history.push('/');                            // and redirect to home page
-                window.location = '/'
             })
             .catch(err => {
                 dispatch({type: actionTypes.ERROR, message: err.message});
@@ -114,10 +113,9 @@ export const register = (data) => {//login(email) password, name, surname,
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
 
-        request(`${apiHost}/user`, 'POST', data)
-            .then( token => {//back end is not responsed this request yet
-                console.log(token);
-                // addTokenToLocalStorage(token);
+        requestWithoutToken(`${apiHost}/user`, 'POST', data)
+            .then( token => {
+                addTokenToLocalStorage(token);
                 dispatch({type: actionTypes.REGISTER_SUCCSESS}); // add token to localStorage 
                 history.push('/login');                            // and redirect to home page
                 window.location = '/signin'
@@ -129,9 +127,9 @@ export const register = (data) => {//login(email) password, name, surname,
 };
 
 export const signout = () => {//jwt -> {jwt : 'jwt string'}
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({type: actionTypes.PENDING});
-        request(`${apiHost}/user/sign-out`, 'POST', {jwt: getToken()})
+        request(`${apiHost}/user/sign-out`, 'POST', {jwt: await getToken()})
             .then( token => {
                 removeToken();//
                 dispatch({type: actionTypes.SIGN_OUT}); // add token to localStorage 

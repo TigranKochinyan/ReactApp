@@ -38,7 +38,6 @@ const Login = (props) => {
             return;
         }
         if(!errorExist && !inputValuesEmpty){
-            console.log(inputValues);//fetch data to server
             props.login({
                 email: inputValues.inputEmail,
                 password: inputValues.inputPassword
@@ -53,17 +52,6 @@ const Login = (props) => {
         }
         if(name === 'inputEmail' && !(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/).test(value)){
             notiication = 'Please entet valid email';
-        }
-        if(name === 'inputPassword' && value.trim() !== '') {
-            if(!(/(?=.*[a-z])/).test(value)){
-                notiication = 'password should contain at least one lowercase letter';
-            };
-            if(!(/(?=.*[A-Z])/).test(value)){
-                notiication = 'password should contain at least one uppercase letter';
-            };
-            if(value.length < 8){
-                notiication = 'password should more then 8 charackters';
-            };
         }
         setInputsIsValid({
             ...inputsIsValid,

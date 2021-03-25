@@ -60,7 +60,6 @@ class NewTaskOrEdit extends React.Component {
             date: formatingDate( inputValueDate.toISOString() ),
             _id: this.props.task?._id
         };
-        // console.log(newTask);
         this.saveOrUpdateTask(newTask);
     };
     render() {

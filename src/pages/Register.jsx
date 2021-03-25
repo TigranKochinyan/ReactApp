@@ -49,7 +49,6 @@ const Register = (props) => {
             return;
         }
         if(!errorExist && !inputValuesEmpty){
-            console.log(inputValues);//
             let sendData = {
                 email: inputValues.inputEmail,
                 password: inputValues.inputPassword,
@@ -57,9 +56,7 @@ const Register = (props) => {
                 name: inputValues.inputName,
                 surname: inputValues.inputSurname, 
             }
-            console.log(sendData);
-            props.register(sendData)
-
+            props.register(sendData);
         };
     };
 
@@ -72,7 +69,6 @@ const Register = (props) => {
             notiication = 'Please entet valid email';
         }
         if((name === 'inputPassword' || name === 'inputConfirmPassword') && value.trim() !== '') {
-            console.log(name,value,'asddsaasd');
             if(!(/(?=.*[a-z])/).test(value)){
                 notiication = 'password should contain at least one lowercase letter';
             };

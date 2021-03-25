@@ -128,7 +128,6 @@ export default function reducer(state=defaultState, action){
           isAuthentificate: false,
           loading: false,
           successMessage: 'You are signed out'
-
         };
       }
       
