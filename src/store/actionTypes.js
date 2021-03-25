@@ -10,4 +10,6 @@ export const LOGIN_SUCCSESS = 'LOGIN_SUCCSESS';
 export const REGISTER_SUCCSESS = 'REGISTER_SUCCSESS';
 export const SIGN_OUT = 'SIGN_OUT';
 export const PENDING = 'PENDING';
+export const GET_USER = 'GET_USER';
+
 

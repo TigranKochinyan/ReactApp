@@ -1,3 +1,5 @@
+@import './../utilVariables.scss';
+
 .contact {
     &-input {
         &.input-invalid {
@@ -10,5 +12,11 @@
 .signin {
     &-row {
         justify-content: center;
+    }
+}
+
+.about {
+    &-text {
+        color: $accent;
     }
 }

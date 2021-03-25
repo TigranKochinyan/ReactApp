@@ -25,6 +25,18 @@ export function getTasks(params={}) {
     }
 };
 
+export const getUserInfo = () => {
+    return (dispatch) => {
+        request(`${apiHost}/user`)
+            .then((user) => {
+                dispatch({type: 'GET_USER', user: `${user.name} ${user.surname}`});
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR,  error: err.message});
+            })
+    }   
+}
+
 export const getTask = (id) => {
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
@@ -70,8 +82,7 @@ export const deleteTask = (id, from) => {
             .then((res)=>{
                 dispatch({type: actionTypes.DELETE_TASK, id});
                 if(from === 'single') {
-                    history.push('/');
-                    window.location = '/';//because history push is not working corect, but page is reloading
+                    history.back();//history push is not working for this page
                 }
             })
             .catch(err => {
@@ -117,8 +128,7 @@ export const register = (data) => {//login(email) password, name, surname,
             .then( token => {
                 addTokenToLocalStorage(token);
                 dispatch({type: actionTypes.REGISTER_SUCCSESS}); // add token to localStorage 
-                history.push('/login');                            // and redirect to home page
-                window.location = '/signin'
+                history.push('/signin');                            // and redirect to sign in page
             })
             .catch(err => {
                 dispatch({type: actionTypes.ERROR, message: err.message});
@@ -133,9 +143,7 @@ export const signout = () => {//jwt -> {jwt : 'jwt string'}
             .then( token => {
                 removeToken();//
                 dispatch({type: actionTypes.SIGN_OUT}); // add token to localStorage 
-                history.push('/');                            // and redirect to sign in page
-                window.location = '/signin'
-                
+                history.push('/signin');                // and redirect to sign in page
             })
             .catch(err => {
                 dispatch({type: actionTypes.ERROR, message: err.message});

@@ -3,6 +3,7 @@ import { isAuthentificate } from './../helpers/auth';
 const defaultState = { 
     taskList: [],
     task: null,
+    user: null,
     sucsessSaveOrUpdateTask: false,
     sucsessDeleteSelected: false,
     loading: false,
@@ -46,6 +47,12 @@ export default function reducer(state=defaultState, action){
           task: action.task
         };
       }
+      case 'GET_USER':{
+        return {
+          ...state,
+          user: action.user
+        };
+      }
       case 'ADD_TASK':{
         return {
           ...state,
@@ -64,10 +71,12 @@ export default function reducer(state=defaultState, action){
           ...state.task,
           ...action.updatedTask
         };
-        taskList[updetedTaskIndex] =  {
-          ...taskList[updetedTaskIndex],
-          ...action.updatedTask
-        };
+        if(updetedTaskIndex !== -1) {
+          taskList[updetedTaskIndex] =  {
+            ...taskList[updetedTaskIndex],
+            ...action.updatedTask
+          };
+        }
         return {
           ...state,
           loading: false,
@@ -84,6 +93,7 @@ export default function reducer(state=defaultState, action){
           ...state,
           loading: false,
           taskList,
+          task: null,
           successMessage: 'Task deleted succsessfully'
         };
       }

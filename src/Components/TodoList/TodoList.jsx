@@ -11,7 +11,8 @@ import Confirm from './Confirm';
 import Search from './Search';
 
 import { 
-    getTasks
+    getTasks,
+    getUserInfo
 } from './../../store/actions';
 
 class TodoList extends Component {
@@ -22,7 +23,9 @@ class TodoList extends Component {
         taskShouldUpdateing: null
     };
     componentDidMount() {
+        this.props.getUserInfo();
         this.props.getTasks();
+        
     };
     checkTask = (id) => {
         let checkedTasks = new Set(this.state.checkedTasks);
@@ -154,7 +157,8 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = {
-    getTasks
+    getTasks,
+    getUserInfo
 };
 
 

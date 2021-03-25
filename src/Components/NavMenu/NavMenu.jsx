@@ -8,7 +8,7 @@ import { signout } from './../../store/actions';
 import './navMenu.scss';
 
 
-const NavMenu = ({ isAuthentificate, signout }) => {
+const NavMenu = ({ isAuthentificate, signout, user }) => {
     const [navMenuShow, setNavMenuShow] = useState(false)
     const showHideNavMenu = (showOrHide) => {
         if(window.innerWidth > 992) {
@@ -20,6 +20,7 @@ const NavMenu = ({ isAuthentificate, signout }) => {
         <Navbar className="navMenu" expanded={navMenuShow}  expand="lg" bg="dark" variant="dark">
             <Navbar.Brand> 
                 <Link onClick={() => showHideNavMenu(false)} className="navMenu-link" to="/"> To Do </Link>
+                <span>{ user }</span>
             </Navbar.Brand>
             <Navbar.Toggle onClick={() => showHideNavMenu(!navMenuShow)} aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
@@ -28,7 +29,7 @@ const NavMenu = ({ isAuthentificate, signout }) => {
                     <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/about"> About </NavLink>
                     {
                         isAuthentificate ? 
-                            <button onClick={signout}>sign out</button>
+                            <button className="navMenu-link-logout" onClick={signout}>Sign out</button>
                             // <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign Out </NavLink>
                             :
                             <>        
@@ -45,7 +46,8 @@ const NavMenu = ({ isAuthentificate, signout }) => {
 
 const mapStateToProps = (store) => {
     return {
-        isAuthentificate: store.isAuthentificate
+        isAuthentificate: store.isAuthentificate,
+        user: store.user
     }
 };
 
