@@ -1,26 +1,8 @@
-// @keyframes pulse {
-//     0% {
-//         transform: rotateX(45deg);
-//     }
-//     50% {
-//         transform: rotateX(120deg);
-//     }
-//     100% {
-//       transform: rotateX(0deg);
-//     }
-//   }
-
 .TodoList {
     &-col {
         .checked {
             border-color: #bd2130;
         } 
-    }
-    .sorted {
-
-        // transition: all .4s ease;
-        // transform: rotateX(45deg);
-        // animation: pulse 1s 1;
     }
     &-card {
         margin: 10px 0; 

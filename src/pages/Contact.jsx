@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { send_from } from './../store/actions'; 
+
 import './pages.scss';
 
-const Contact = () => {
+const Contact = (props) => {
     const [ inputValues, setInputValues ] = useState({
         inputName: '',
         inputEmail: '',
@@ -39,37 +42,17 @@ const Contact = () => {
             return;
         }
         if(!errorExist && !inputValuesEmpty){
-            fetch('http://localhost:3001/form', {//fetch@ hanellllll
-                method: 'POST',
-                headers: {
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify({
-                    name: inputValues.inputName, 
-                    email: inputValues.inputEmail,
-                    message: inputValues.inputText
-                })
+            props.send_from({
+                name: inputValues.inputName, 
+                email: inputValues.inputEmail,
+                message: inputValues.inputText
             })
-            .then(async (response) => {
-                const data = await response.json();
-                if(response.status >=400 && response.status < 600){
-                    if(data.error){
-                        throw data.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-                setInputValues({
-                    inputName: '',
-                    inputEmail: '',
-                    inputText: ''
-                })
-
+            console.log(props);
+            setInputValues({
+                inputName: '',
+                inputEmail: '',
+                inputText: ''
             })
-            .catch((error)=>{
-                console.log('catch error', error);
-            });
         };
     };
 
@@ -156,4 +139,15 @@ const Contact = () => {
     )
 }
 
-export default Contact;
+const mapStateToProps = (store) => {
+    return {
+        successMessage: store.successMessage, 
+        errorMessage: store.errorMessage,
+    }
+}
+
+const mapDispatchToProps = {
+    send_from
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contact);

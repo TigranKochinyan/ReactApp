@@ -104,6 +104,21 @@ export const deleteSelected = (requestBody, checkedTasks) => {
     }
 };
 
+export const send_from = (message) => {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING});
+        requestWithoutToken(`${apiHost}/form`, 'POST', message)
+            .then( res => {
+                dispatch({type: actionTypes.SEND_FORM});
+                return res;
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+                return new Error('Something went wrong!');
+            });
+    }
+};
+
 export const login = (data) => {//login password
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING});
@@ -150,3 +165,5 @@ export const signout = () => {//jwt -> {jwt : 'jwt string'}
             });
     }
 };
+
+

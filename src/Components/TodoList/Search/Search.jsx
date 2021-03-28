@@ -159,14 +159,6 @@ const Search = (props) => {
     )
 };
 
-// const mapStateToProps = (store) => {
-//     return {
-//         taskList: store.taskList,
-//         sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask,
-//         sucsessDeleteSelected: store.sucsessDeleteSelected
-//     }
-// }
-
 const mapDispatchToProps = {
     getTasks
 };

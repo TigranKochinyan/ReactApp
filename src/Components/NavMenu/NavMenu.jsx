@@ -30,7 +30,6 @@ const NavMenu = ({ isAuthentificate, signout, user }) => {
                     {
                         isAuthentificate ? 
                             <button className="navMenu-link-logout" onClick={signout}>Sign out</button>
-                            // <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign Out </NavLink>
                             :
                             <>        
                             <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign in </NavLink>

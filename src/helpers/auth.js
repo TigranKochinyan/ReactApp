@@ -46,7 +46,7 @@ export default function requestWithoutToken(url, method='GET', body){
         config.body = JSON.stringify(body);
     }
 
-   return fetch(url, config)
+    return fetch(url, config)
         .then(async (response) => {
             const res = await response.json();
 

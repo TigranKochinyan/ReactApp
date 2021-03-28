@@ -114,6 +114,13 @@ export default function reducer(state=defaultState, action){
           taskList: action.taskList
         };
       }
+      case 'SEND_FORM':{
+        return {
+          ...state,
+          loading: false,
+          successMessage: 'Message sended succsessfully'
+        };
+      }
       case 'LOGIN_SUCCSESS':{//not working
         return {
           ...state,

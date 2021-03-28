@@ -133,7 +133,7 @@ class TodoList extends Component {
                     showWarning && <Confirm 
                         show={this.state.showWarning}
                         closeWarning={this.showAndCloseWarning}
-                        checkedTasks={ checkedTasks }//stugum
+                        checkedTasks={ checkedTasks }
                     />
                 }
                 {
