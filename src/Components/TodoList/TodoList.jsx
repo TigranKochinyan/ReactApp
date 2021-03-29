@@ -90,7 +90,7 @@ class TodoList extends Component {
     }
 
     render() {
-        const { taskList } = this.props;
+        const { taskList, theme } = this.props;
         const { checkedTasks, showNewTaskModal, taskShouldUpdateing, showWarning } = this.state;
         const tasks = taskList.map(item => {
             return (
@@ -109,7 +109,7 @@ class TodoList extends Component {
             );
         });
         return (
-            <Container className="TodoList">
+            <Container className={`TodoList TodoList-${theme}`}>
                 <SectioTitle title='Your Tasks' />
                 <Row>
                     <Col>
@@ -152,7 +152,8 @@ const mapStateToProps = (store) => {
     return {
         taskList: store.taskList,
         sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask,
-        sucsessDeleteSelected: store.sucsessDeleteSelected
+        sucsessDeleteSelected: store.sucsessDeleteSelected,
+        theme: store.theme
     }
 }
 

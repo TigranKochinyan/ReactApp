@@ -2,7 +2,7 @@ import request from '../helpers/request';
 import * as actionTypes from './actionTypes';
 import {history} from './../helpers/history';
 import requestWithoutToken from './../helpers/auth';
-import { addTokenToLocalStorage, getToken, removeToken } from './../helpers/auth';
+import { addTokenToLocalStorage, getToken, removeToken, getTheme } from './../helpers/auth';
 
 const apiHost = process.env.REACT_APP_API_HOST;
 
@@ -35,6 +35,15 @@ export const getUserInfo = () => {
                 dispatch({type: actionTypes.ERROR,  error: err.message});
             })
     }   
+};
+
+export const changeTheme = () => {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING});
+        const theme = getTheme() === 'light' ? 'dark' : 'light';
+        dispatch({type: actionTypes.CHANGE_THEME, theme});
+        localStorage.setItem('theme', theme);
+    }
 }
 
 export const getTask = (id) => {

@@ -12,5 +12,6 @@ export const SIGN_OUT = 'SIGN_OUT';
 export const PENDING = 'PENDING';
 export const GET_USER = 'GET_USER';
 export const SEND_FORM = 'SEND_FORM';
+export const CHANGE_THEME = 'CHANGE_THEME';
 
 

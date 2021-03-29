@@ -80,3 +80,7 @@ export function logout(){
 export function isAuthentificate(){
     return !!localStorage.getItem('token');
 }
+
+export function getTheme(){
+    return localStorage.getItem('theme');
+}

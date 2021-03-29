@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './App.css';
+import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TodoList from './Components/TodoList';
 import {
@@ -22,9 +22,10 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Spinner from './Components/Spinner';
 import AuthRoute from './Components/AuthRoute';
+import Footer from './Components/Footer';
 
 
-function App({ successMessage, errorMessage, loading, isAuthentificate }) {
+function App({ successMessage, errorMessage, loading, isAuthentificate, theme }) {
 
 	useEffect(() => {
 
@@ -52,7 +53,7 @@ function App({ successMessage, errorMessage, loading, isAuthentificate }) {
 		}
 	}, [successMessage, errorMessage]);
   	return (
-		  <div className="app">
+		  <div className={`app app-${theme}`}>
 			<Router>
 				<NavMenu />
 				<Switch>
@@ -89,6 +90,7 @@ function App({ successMessage, errorMessage, loading, isAuthentificate }) {
 					<Route exact path="/not-found" component={NotFound} />
 					<Redirect to="/not-found" />
 				</Switch>
+				<Footer/>
 			</Router>
 			{ 
 				loading && <Spinner/>
@@ -103,7 +105,8 @@ const mapStateToProps = (store) => {
 		loading: store.loading,
 		errorMessage: store.errorMessage,
 		successMessage: store.successMessage,
-		isAuthentificate: store.isAuthentificate
+		isAuthentificate: store.isAuthentificate,
+		theme: store.theme
     }
 }
 

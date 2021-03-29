@@ -5,6 +5,7 @@ import { cutText, textTransform, formatingDate } from './../../../helpers/utils'
 import DatePicker from "react-datepicker";
 import { getTasks } from './../../../store/actions';
 
+
 import "react-datepicker/dist/react-datepicker.css";
 import './search.scss';
 
@@ -74,10 +75,10 @@ const Search = (props) => {
             </div>
         )
     );
-
+    const { theme } = props;
     return (
-        <div className="search mb-3">
-            <InputGroup >
+        <div className={`search mb-3 search-${theme}`}>
+            <InputGroup className={`search-${theme}`}>
                 <FormControl
                     placeholder="Search"
                     onChange={(event) => setSearch(event.target.value)}
@@ -163,4 +164,10 @@ const mapDispatchToProps = {
     getTasks
 };
 
-export default connect(null, mapDispatchToProps)(Search);
+const mapStateToProps = (store) => {
+    return {
+        theme: store.theme
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

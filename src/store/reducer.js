@@ -1,4 +1,4 @@
-import { isAuthentificate } from './../helpers/auth';
+import { isAuthentificate, getTheme } from './../helpers/auth';
 
 const defaultState = { 
     taskList: [],
@@ -9,7 +9,8 @@ const defaultState = {
     loading: false,
     successMessage: null, 
     errorMessage: null,
-    isAuthentificate: isAuthentificate()
+    isAuthentificate: isAuthentificate(),
+    theme: getTheme() || 'light'
 };
 
 
@@ -119,6 +120,13 @@ export default function reducer(state=defaultState, action){
           ...state,
           loading: false,
           successMessage: 'Message sended succsessfully'
+        };
+      }
+      case 'CHANGE_THEME':{
+        return {
+          ...state,
+          loading: false,
+          theme: action.theme
         };
       }
       case 'LOGIN_SUCCSESS':{//not working

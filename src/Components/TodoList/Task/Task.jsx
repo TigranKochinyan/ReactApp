@@ -13,9 +13,9 @@ import { faEdit, faTrashAlt, faCheck, faRedo } from '@fortawesome/free-solid-svg
 import { formatingDate, cutText } from './../../../helpers/utils';
 
 const Task = (props) => {
-    const { task, checkTask, editTask, deleteTask, disabled, checked } = props;
+    const { task, checkTask, editTask, deleteTask, disabled, checked, theme } = props;
     return (
-        <Card className={`TodoList-card  ${checked ? 'checked' : ''}`}>
+        <Card className={`TodoList-card  ${checked ? 'checked' : ''} TodoList-card-${theme}`}>
             <Card.Body>
                 <Form.Check
                     type="checkbox"
@@ -93,9 +93,14 @@ Task.propTypes = {
     editTask: PropTypes.func.isRequired
 }
 
+const mapStateToProps = (store) => {
+    return {
+        theme: store.theme
+    }
+}
 const mapDispatchToProps = {
     deleteTask,
     updateTask
 };
 
-export default connect(null, mapDispatchToProps)(Task);
+export default connect(mapStateToProps, mapDispatchToProps)(Task);

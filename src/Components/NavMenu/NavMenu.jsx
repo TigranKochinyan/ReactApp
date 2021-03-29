@@ -3,12 +3,12 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { signout } from './../../store/actions';
+import { signout, changeTheme } from './../../store/actions';
 
 import './navMenu.scss';
 
 
-const NavMenu = ({ isAuthentificate, signout, user }) => {
+const NavMenu = ({ isAuthentificate, signout, user, changeTheme }) => {
     const [navMenuShow, setNavMenuShow] = useState(false)
     const showHideNavMenu = (showOrHide) => {
         if(window.innerWidth > 992) {
@@ -27,6 +27,7 @@ const NavMenu = ({ isAuthentificate, signout, user }) => {
                 <Nav className="ml-auto">
                     <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/contact"> Contact Us </NavLink>
                     <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/about"> About </NavLink>
+                    <button onClick={changeTheme}>change theme</button>
                     {
                         isAuthentificate ? 
                             <button className="navMenu-link-logout" onClick={signout}>Sign out</button>
@@ -51,7 +52,8 @@ const mapStateToProps = (store) => {
 };
 
 const mapDispatchToProps = {
-    signout
+    signout,
+    changeTheme
 }
 
 
