@@ -3,12 +3,15 @@ import { Navbar, Nav } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { signout, changeTheme } from './../../store/actions';
 
 import './navMenu.scss';
 
 
-const NavMenu = ({ isAuthentificate, signout, user, changeTheme }) => {
+const NavMenu = ({ isAuthentificate, signout, user, changeTheme, theme }) => {
     const [navMenuShow, setNavMenuShow] = useState(false)
     const showHideNavMenu = (showOrHide) => {
         if(window.innerWidth > 992) {
@@ -16,6 +19,10 @@ const NavMenu = ({ isAuthentificate, signout, user, changeTheme }) => {
         }
         setNavMenuShow(showOrHide);
     };
+    const changeThemeAndCloseMenu = () => {
+        changeTheme();
+        showHideNavMenu(false);
+    }
     return (
         <Navbar className="navMenu" expanded={navMenuShow}  expand="lg" bg="dark" variant="dark">
             <Navbar.Brand> 
@@ -24,10 +31,9 @@ const NavMenu = ({ isAuthentificate, signout, user, changeTheme }) => {
             </Navbar.Brand>
             <Navbar.Toggle onClick={() => showHideNavMenu(!navMenuShow)} aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="ml-auto">
+                <Nav className="ml-auto navMenu-links">
                     <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/contact"> Contact Us </NavLink>
                     <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/about"> About </NavLink>
-                    <button onClick={changeTheme}>change theme</button>
                     {
                         isAuthentificate ? 
                             <button className="navMenu-link-logout" onClick={signout}>Sign out</button>
@@ -35,8 +41,14 @@ const NavMenu = ({ isAuthentificate, signout, user, changeTheme }) => {
                             <>        
                             <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signin"> Sign in </NavLink>
                             <NavLink activeClassName="navMenu-active-link" className="navMenu-link" onClick={() => showHideNavMenu(false)} to="/signup"> Sign Up </NavLink>
-                            </> 
-                        
+                            </>   
+                    }
+                    {
+                        theme === 'light' ? 
+                        <FontAwesomeIcon className="navMenu-theme-icon" onClick={changeThemeAndCloseMenu} icon={ faMoon } /> 
+                        :
+                        <FontAwesomeIcon className="navMenu-theme-icon" onClick={changeThemeAndCloseMenu} icon={ faSun } />
+                    
                     }
                 </Nav>
             </Navbar.Collapse>
@@ -47,7 +59,8 @@ const NavMenu = ({ isAuthentificate, signout, user, changeTheme }) => {
 const mapStateToProps = (store) => {
     return {
         isAuthentificate: store.isAuthentificate,
-        user: store.user
+        user: store.user,
+        theme: store.theme
     }
 };
 

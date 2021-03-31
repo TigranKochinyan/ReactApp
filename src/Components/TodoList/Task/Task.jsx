@@ -27,9 +27,6 @@ const Task = (props) => {
                 <Card.Title>
                     <Link to={`/task/${task._id}`}> {cutText(task.title, 20)} </Link>
                 </Card.Title>
-                {/* <span className={`TodoList-card-priority ${task.priority}` }>
-                    {task.priority !== 'none' && task.priority  }
-                </span> */}
                 <Card.Text>
                     Description: {cutText(task.description)}
                 </Card.Text>

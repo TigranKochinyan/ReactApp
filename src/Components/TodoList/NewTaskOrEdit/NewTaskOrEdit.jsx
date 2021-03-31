@@ -4,6 +4,7 @@ import { Col, Button, InputGroup, Form, Modal } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from 'react-redux';
+import './newTaskOrEdit.scss'
 
 import { saveTask, updateTask } from './../../../store/actions';
 
@@ -64,18 +65,19 @@ class NewTaskOrEdit extends React.Component {
     };
     render() {
         const { validated, inputValueDesc, inputValueTitle } = this.state;
-        const { show, closeModal, task } = this.props;
+        const { show, closeModal, task, theme } = this.props;
         return (
             <Modal
                 show={show}
                 onHide={closeModal}
                 backdrop="static"
                 keyboard={false}
+                className={`newTaskModal newTaskModal-${theme}`}
             >
-                <Modal.Header closeButton>
+                <Modal.Header className={`newTaskModal-${theme}-head`} closeButton>
                     <Modal.Title> { task ? 'Edit' : 'Write' } Your Task </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className={`modal-body`}>
                     <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
                         <Form.Row>
                             <Form.Group as={Col} md="12" >
@@ -139,7 +141,8 @@ NewTaskOrEdit.propTypes = {
 
 const mapStateToProps = (store) => {
     return {
-        taskList: store.taskList
+        taskList: store.taskList,
+        theme: store.theme
     }
 }
 

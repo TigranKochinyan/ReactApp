@@ -1,21 +1,47 @@
 @import './../utilVariables.scss';
 
 .contact {
+    min-height: 72vh;
     &-input {
         &.input-invalid {
             border: 1px solid #dc3545;
         }
+        
+    }
+    &-dark {
+        input, textarea {
+            background-color: #2f2f2f;
+            border-color: darkslategrey !important;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+        }
+    }
+    
+}
+
+.singleTask {
+    $self: &;
+    min-height: 72vh;
+
+    &-dark {
+        #{ $self }-card {
+            background-color: #2f2f2f;
+            border-color: darkslategray;
+        }
+        
     }
 }
 
-
 .signin {
+    min-height: 72vh;
+
     &-row {
         justify-content: center;
     }
 }
 
 .about {
+    min-height: 72vh;
+
     &-text {
         color: $accent;
     }

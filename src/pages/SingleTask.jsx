@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { getTask, saveTask, deleteTask, updateTask } from './../store/actions';
 
 import { formatingDate } from './../helpers/utils';
+import './pages.scss';
 
 class SingleTask extends React.Component {
     state = {
@@ -43,14 +44,14 @@ class SingleTask extends React.Component {
 
     render() {
         const { showModal } = this.state;
-        const { task } = this.props;
+        const { task, theme } = this.props;
 
         return (
-            <Container className="TodoList">
+            <Container className={`singleTask singleTask-${theme} mt-3`}>
                 <Row>
                     <Col xs={12}>
                         {
-                            task && <Card className={`TodoList-card text-center`}>
+                            task && <Card className={`singleTask-card text-center`}>
                                 <Card.Body>
                                     <Card.Title>{task.title}</Card.Title>
                                     <Card.Text>
@@ -118,7 +119,8 @@ const mapStateToProps = (store) => {
     return {
         taskList: store.taskList,
         task: store.task,
-        sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask
+        sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask,
+        theme: store.theme
     }
 }
 

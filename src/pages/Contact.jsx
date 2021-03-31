@@ -77,12 +77,12 @@ const Contact = (props) => {
         })
         
     }
-
+    const { theme } = props;
     return (
-        <Container className="contact">
+        <Container className={`contact contact-${theme}`}>
             <Row>
-                <Col xs={12}>
-                    <h1>ContactUs PAGE</h1>
+                <Col xs={12} sm={{ span: 6, offset: 3 }}>
+                    <h1>Contact Us</h1>
                     <Form>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Your name</Form.Label>
@@ -143,6 +143,7 @@ const mapStateToProps = (store) => {
     return {
         successMessage: store.successMessage, 
         errorMessage: store.errorMessage,
+        theme: store.theme
     }
 }
 

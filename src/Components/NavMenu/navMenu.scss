@@ -21,4 +21,17 @@
     &-active-link {
         color: aqua;
     }
+    &-links {
+        align-items: center;
+    }
+    &-theme-icon {
+        width: 30px !important;
+        height: 30px;
+        :hover {
+            cursor: pointer;
+        }
+        path {
+            fill: #ffc106;
+        }
+    }
 }
