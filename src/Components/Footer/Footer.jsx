@@ -7,8 +7,9 @@ const Footer = () => {
         <div className="footer">
             <div className="footer-first">
                 <ul>
-                    <li><Link to="/">About Us</Link></li>
-                    <li><Link to="/">Contact Us</Link></li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About Us</Link></li>
+                    <li><Link to="/contact">Contact Us</Link></li>
                 </ul>
             </div>
             <div className="footer-second">

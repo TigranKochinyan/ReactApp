@@ -43,6 +43,9 @@
     min-height: 72vh;
 
     &-text {
-        color: $accent;
+    }
+    &-paragraph {
+        margin: 20px 0;
+        text-align: left;
     }
 }
