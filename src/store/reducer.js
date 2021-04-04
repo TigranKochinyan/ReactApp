@@ -1,11 +1,16 @@
+import { isAuthentificate, getTheme } from './../helpers/auth';
+
 const defaultState = { 
     taskList: [],
     task: null,
+    user: null,
     sucsessSaveOrUpdateTask: false,
     sucsessDeleteSelected: false,
     loading: false,
     successMessage: null, 
-    errorMessage: null
+    errorMessage: null,
+    isAuthentificate: isAuthentificate(),
+    theme: getTheme() || 'light'
 };
 
 
@@ -43,6 +48,12 @@ export default function reducer(state=defaultState, action){
           task: action.task
         };
       }
+      case 'GET_USER':{
+        return {
+          ...state,
+          user: action.user
+        };
+      }
       case 'ADD_TASK':{
         return {
           ...state,
@@ -52,17 +63,28 @@ export default function reducer(state=defaultState, action){
           successMessage: 'Task created succsessfully'
         };
       }
-      case 'UPDATE_TASK':{
+      case 'UPDATE_TASK':{//edit this, add 'from single' maybe
+        let successMessage = 'Task edited succsessfully';
+        successMessage = action.updatedTask.status === 'done' ?  'Task is done' : 'Task is active';
         const taskList = [...state.taskList];
         const updetedTaskIndex = taskList.findIndex((task) => action.updatedTask._id === task._id);
-        taskList[updetedTaskIndex] = action.updatedTask;
+        const task = {
+          ...state.task,
+          ...action.updatedTask
+        };
+        if(updetedTaskIndex !== -1) {
+          taskList[updetedTaskIndex] =  {
+            ...taskList[updetedTaskIndex],
+            ...action.updatedTask
+          };
+        }
         return {
           ...state,
           loading: false,
-          task: action.updatedTask,
+          task,
           taskList,
           sucsessSaveOrUpdateTask: true,
-          successMessage: 'Task edited succsessfully'
+          successMessage
 
         };
       }
@@ -72,6 +94,7 @@ export default function reducer(state=defaultState, action){
           ...state,
           loading: false,
           taskList,
+          task: null,
           successMessage: 'Task deleted succsessfully'
         };
       }
@@ -92,6 +115,41 @@ export default function reducer(state=defaultState, action){
           taskList: action.taskList
         };
       }
+      case 'SEND_FORM':{
+        return {
+          ...state,
+          loading: false,
+          successMessage: 'Message sended succsessfully'
+        };
+      }
+      case 'CHANGE_THEME':{
+        return {
+          ...state,
+          loading: false,
+          theme: action.theme
+        };
+      }
+      case 'LOGIN_SUCCSESS':{
+        return {
+          ...state,
+          loading: false,
+          isAuthentificate: true
+        };
+      }
+      case 'REGISTER_SUCCSESS':{
+        return {
+          ...state,
+          loading: false
+        };
+      }
+      case 'SIGN_OUT':{
+        return {
+          ...state,
+          isAuthentificate: false,
+          loading: false
+        };
+      }
+      
       default: return state;
     }
 }

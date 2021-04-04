@@ -30,4 +30,17 @@
             }
         }
     }
+    &-dark {
+        background-color: #2f2f2f;
+        .search-accordion-card {
+            background-color: #2f2f2f;
+            border-color: darkslategray;
+        }
+
+        input {
+            background-color: #2f2f2f;
+            border-color: darkslategray !important;
+        }
+    }
+    
 }

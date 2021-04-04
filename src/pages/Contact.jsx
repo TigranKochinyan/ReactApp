@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { send_from } from './../store/actions'; 
+
 import './pages.scss';
 
-const Contact = () => {
+const Contact = (props) => {
     const [ inputValues, setInputValues ] = useState({
         inputName: '',
         inputEmail: '',
@@ -39,44 +42,23 @@ const Contact = () => {
             return;
         }
         if(!errorExist && !inputValuesEmpty){
-            fetch('http://localhost:3001/form', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify({
-                    name: inputValues.inputName, 
-                    email: inputValues.inputEmail,
-                    message: inputValues.inputText
-                })
+            props.send_from({
+                name: inputValues.inputName, 
+                email: inputValues.inputEmail,
+                message: inputValues.inputText
             })
-            .then(async (response) => {
-                const data = await response.json();
-                if(response.status >=400 && response.status < 600){
-                    if(data.error){
-                        throw data.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-                console.log(response);//
+            .then(() => {
                 setInputValues({
                     inputName: '',
                     inputEmail: '',
                     inputText: ''
                 })
-
-            })
-            .catch((error)=>{
-                console.log('catch error', error);
             });
         };
     };
 
     const validator = (name, value) => {
         if(name === 'inputEmail' && !(new RegExp(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)).test(value)){
-            // console.log('invalid email');
             setInputsIsValid({
                 ...inputsIsValid,
                 [name]: 'Please entet valid email'
@@ -84,8 +66,6 @@ const Contact = () => {
             return;
         }
         if(value.trim() === '') {//should optimization
-            // console.log('invalid text or name');
-
             setInputsIsValid({
                 ...inputsIsValid,
                 [name]: 'is required'
@@ -98,15 +78,14 @@ const Contact = () => {
         })
         
     }
-
+    const { theme } = props;
     return (
-        <Container className="contact">
+        <Container className={`contact contact-${theme} mt-3`}>
             <Row>
-                <Col xs={12}>
-                    <h1>ContactUs PAGE</h1>
-                    <Form>
+                <Col xs={12} sm={{ span: 6, offset: 3 }}>
+                    <h1>Contact Us</h1>
+                    <Form className="mt-4">
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Your name</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -121,7 +100,6 @@ const Contact = () => {
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Email</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -135,7 +113,6 @@ const Contact = () => {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicCheckbox">
-                            <Form.Label>Your message</Form.Label>
                             <Form.Control
                                 className="contact-input"
                                 name="inputText"
@@ -160,4 +137,16 @@ const Contact = () => {
     )
 }
 
-export default Contact;
+const mapStateToProps = (store) => {
+    return {
+        successMessage: store.successMessage, 
+        errorMessage: store.errorMessage,
+        theme: store.theme
+    }
+}
+
+const mapDispatchToProps = {
+    send_from
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contact);

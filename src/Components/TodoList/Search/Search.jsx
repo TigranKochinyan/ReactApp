@@ -5,6 +5,7 @@ import { cutText, textTransform, formatingDate } from './../../../helpers/utils'
 import DatePicker from "react-datepicker";
 import { getTasks } from './../../../store/actions';
 
+
 import "react-datepicker/dist/react-datepicker.css";
 import './search.scss';
 
@@ -60,7 +61,6 @@ const Search = (props) => {
            }
 
        }
-       console.log('search',params);
        props.getTasks(params);
     };
 
@@ -75,10 +75,10 @@ const Search = (props) => {
             </div>
         )
     );
-
+    const { theme } = props;
     return (
-        <div className="search mb-3">
-            <InputGroup >
+        <div className={`search mb-3 search-${theme}`}>
+            <InputGroup className={`search-${theme}`}>
                 <FormControl
                     placeholder="Search"
                     onChange={(event) => setSearch(event.target.value)}
@@ -136,7 +136,7 @@ const Search = (props) => {
                 <Card className="search-accordion-card">
                     <Card.Header>
                     <Accordion.Toggle as={Button} className="text-center" variant="link" eventKey="0">
-                        Sort
+                        Filter
                     </Accordion.Toggle>
                     </Card.Header>
                     <Accordion.Collapse eventKey="0">
@@ -160,16 +160,14 @@ const Search = (props) => {
     )
 };
 
-// const mapStateToProps = (store) => {
-//     return {
-//         taskList: store.taskList,
-//         sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask,
-//         sucsessDeleteSelected: store.sucsessDeleteSelected
-//     }
-// }
-
 const mapDispatchToProps = {
     getTasks
 };
 
-export default connect(null, mapDispatchToProps)(Search);
+const mapStateToProps = (store) => {
+    return {
+        theme: store.theme
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

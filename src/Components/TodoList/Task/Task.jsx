@@ -5,17 +5,17 @@ import './task.scss';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { deleteTask } from './../../../store/actions';
+import { deleteTask, updateTask } from './../../../store/actions';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faCheck, faRedo } from '@fortawesome/free-solid-svg-icons';
 
 import { formatingDate, cutText } from './../../../helpers/utils';
 
 const Task = (props) => {
-    const { task, checkTask, editTask, deleteTask, disabled, checked } = props;
+    const { task, checkTask, editTask, deleteTask, disabled, checked, theme } = props;
     return (
-        <Card className={`TodoList-card  ${checked ? 'checked' : ''}`}>
+        <Card className={`TodoList-card  ${checked ? 'checked' : ''} TodoList-card-${theme}`}>
             <Card.Body>
                 <Form.Check
                     type="checkbox"
@@ -27,11 +27,14 @@ const Task = (props) => {
                 <Card.Title>
                     <Link to={`/task/${task._id}`}> {cutText(task.title, 20)} </Link>
                 </Card.Title>
-                {/* <span className={`TodoList-card-priority ${task.priority}` }>
-                    {task.priority !== 'none' && task.priority  }
-                </span> */}
                 <Card.Text>
                     Description: {cutText(task.description)}
+                </Card.Text>
+                <Card.Text>
+                    Status: {task.status}
+                </Card.Text>
+                <Card.Text>
+                    Created at: {formatingDate(task.created_at)}
                 </Card.Text>
                 <Card.Text>
                     date: {formatingDate(task.date)}
@@ -52,6 +55,31 @@ const Task = (props) => {
                 >
                     <FontAwesomeIcon icon={ faEdit } />
                 </Button>
+                {
+                    task.status === 'active' ?
+                        <Button
+                            className="icon-in-button ml-1"
+                            onClick={() => props.updateTask({
+                                _id: task._id,
+                                status: 'done'
+                            })}
+                            variant="outline-success"
+                            disabled={disabled}
+                        >
+                            <FontAwesomeIcon icon={ faCheck } />
+                        </Button> :
+                        <Button
+                            className="icon-in-button ml-1"
+                            onClick={() => props.updateTask({
+                                _id: task._id,
+                                status: 'active'
+                            })}
+                            variant="outline-secondary"
+                            disabled={disabled}
+                        >
+                            <FontAwesomeIcon icon={ faRedo } />
+                        </Button>
+                }
             </Card.Body>
         </Card>
     )
@@ -65,8 +93,14 @@ Task.propTypes = {
     editTask: PropTypes.func.isRequired
 }
 
+const mapStateToProps = (store) => {
+    return {
+        theme: store.theme
+    }
+}
 const mapDispatchToProps = {
     deleteTask,
+    updateTask
 };
 
-export default connect(null, mapDispatchToProps)(Task);
+export default connect(mapStateToProps, mapDispatchToProps)(Task);

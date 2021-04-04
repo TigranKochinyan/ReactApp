@@ -11,7 +11,8 @@ import Confirm from './Confirm';
 import Search from './Search';
 
 import { 
-    getTasks
+    getTasks,
+    getUserInfo
 } from './../../store/actions';
 
 class TodoList extends Component {
@@ -22,7 +23,9 @@ class TodoList extends Component {
         taskShouldUpdateing: null
     };
     componentDidMount() {
+        this.props.getUserInfo();
         this.props.getTasks();
+        
     };
     checkTask = (id) => {
         let checkedTasks = new Set(this.state.checkedTasks);
@@ -87,7 +90,7 @@ class TodoList extends Component {
     }
 
     render() {
-        const { taskList } = this.props;
+        const { taskList, theme } = this.props;
         const { checkedTasks, showNewTaskModal, taskShouldUpdateing, showWarning } = this.state;
         const tasks = taskList.map(item => {
             return (
@@ -106,7 +109,7 @@ class TodoList extends Component {
             );
         });
         return (
-            <Container className="TodoList">
+            <Container className={`TodoList TodoList-${theme}`}>
                 <SectioTitle title='Your Tasks' />
                 <Row>
                     <Col>
@@ -130,7 +133,7 @@ class TodoList extends Component {
                     showWarning && <Confirm 
                         show={this.state.showWarning}
                         closeWarning={this.showAndCloseWarning}
-                        checkedTasks={ checkedTasks }//stugum
+                        checkedTasks={ checkedTasks }
                     />
                 }
                 {
@@ -149,12 +152,14 @@ const mapStateToProps = (store) => {
     return {
         taskList: store.taskList,
         sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask,
-        sucsessDeleteSelected: store.sucsessDeleteSelected
+        sucsessDeleteSelected: store.sucsessDeleteSelected,
+        theme: store.theme
     }
 }
 
 const mapDispatchToProps = {
-    getTasks
+    getTasks,
+    getUserInfo
 };
 
 

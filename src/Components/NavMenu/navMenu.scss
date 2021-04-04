@@ -1,5 +1,37 @@
 .navMenu {
     &-link {
         padding: 5px;
+        &:hover {
+            text-decoration: none;
+        }
+
+        &-logout {
+            border: none;
+            background: transparent;
+            color: #007bf3;
+            text-align: left;
+            &:hover {
+                color: #0056b3;
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+    &-active-link {
+        color: aqua;
+    }
+    &-links {
+        align-items: center;
+    }
+    &-theme-icon {
+        width: 30px !important;
+        height: 30px;
+        :hover {
+            cursor: pointer;
+        }
+        path {
+            fill: #ffc106;
+        }
     }
 }

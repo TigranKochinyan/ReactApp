@@ -1,13 +1,15 @@
 import React from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faCheck, faRedo } from '@fortawesome/free-solid-svg-icons';
+
 import NewTaskOrEdit from './../Components/TodoList/NewTaskOrEdit';
 
 import { connect } from 'react-redux';
-import { getTasks, getTask, saveTask, deleteTask } from './../store/actions';
+import { getTask, saveTask, deleteTask, updateTask } from './../store/actions';
 
 import { formatingDate } from './../helpers/utils';
+import './pages.scss';
 
 class SingleTask extends React.Component {
     state = {
@@ -42,21 +44,27 @@ class SingleTask extends React.Component {
 
     render() {
         const { showModal } = this.state;
-        const { task } = this.props;
+        const { task, theme } = this.props;
 
         return (
-            <Container className="TodoList">
+            <Container className={`singleTask singleTask-${theme} mt-3`}>
                 <Row>
                     <Col xs={12}>
                         {
-                            task && <Card className={`TodoList-card text-center`}>
+                            task && <Card className={`singleTask-card text-center`}>
                                 <Card.Body>
                                     <Card.Title>{task.title}</Card.Title>
                                     <Card.Text>
                                         Description: {task.description}
                                     </Card.Text>
                                     <Card.Text>
+                                        Status: {task.status}
+                                    </Card.Text>
+                                    <Card.Text>
                                         date: {formatingDate(task.date)}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Created at: {formatingDate(task.created_at)}
                                     </Card.Text>
                                     <Button
                                         className="icon-in-button"
@@ -72,6 +80,29 @@ class SingleTask extends React.Component {
                                     >
                                         <FontAwesomeIcon icon={faEdit} />
                                     </Button>
+                                    {
+                                        task.status === 'active' ?
+                                            <Button
+                                                className="icon-in-button ml-1"
+                                                onClick={() => this.props.updateTask({
+                                                    _id: task._id,
+                                                    status: 'done'
+                                                })}
+                                                variant="outline-success"
+                                            >
+                                                <FontAwesomeIcon icon={ faCheck } />
+                                            </Button> :
+                                            <Button
+                                                className="icon-in-button ml-1"
+                                                onClick={() => this.props.updateTask({
+                                                    _id: task._id,
+                                                    status: 'active'
+                                                })}
+                                                variant="outline-secondary"
+                                            >
+                                                <FontAwesomeIcon icon={ faRedo } />
+                                            </Button>
+                                    }
                                 </Card.Body>
                             </Card>
                         }
@@ -94,12 +125,13 @@ const mapStateToProps = (store) => {
     return {
         taskList: store.taskList,
         task: store.task,
-        sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask
+        sucsessSaveOrUpdateTask: store.sucsessSaveOrUpdateTask,
+        theme: store.theme
     }
 }
 
 const mapDispatchToProps = {
-    getTasks,
+    updateTask,
     getTask,
     saveTask,
     deleteTask
