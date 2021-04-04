@@ -136,7 +136,7 @@ const Search = (props) => {
                 <Card className="search-accordion-card">
                     <Card.Header>
                     <Accordion.Toggle as={Button} className="text-center" variant="link" eventKey="0">
-                        Sort
+                        Filter
                     </Accordion.Toggle>
                     </Card.Header>
                     <Accordion.Collapse eventKey="0">

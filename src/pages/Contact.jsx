@@ -79,13 +79,12 @@ const Contact = (props) => {
     }
     const { theme } = props;
     return (
-        <Container className={`contact contact-${theme}`}>
+        <Container className={`contact contact-${theme} mt-3`}>
             <Row>
                 <Col xs={12} sm={{ span: 6, offset: 3 }}>
                     <h1>Contact Us</h1>
-                    <Form>
+                    <Form className="mt-4">
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Your name</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -100,7 +99,6 @@ const Contact = (props) => {
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Email</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -114,7 +112,6 @@ const Contact = (props) => {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicCheckbox">
-                            <Form.Label>Your message</Form.Label>
                             <Form.Control
                                 className="contact-input"
                                 name="inputText"

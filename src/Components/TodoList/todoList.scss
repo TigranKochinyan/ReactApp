@@ -1,11 +1,9 @@
 .TodoList {
+    min-height: 72vh;
     &-col {
         .checked {
             border-color: #bd2130;
         } 
-    }
-    &-light {
-
     }
     &-dark {
         background-color: #2f2f2f;

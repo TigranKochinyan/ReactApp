@@ -81,7 +81,6 @@ class NewTaskOrEdit extends React.Component {
                     <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
                         <Form.Row>
                             <Form.Group as={Col} md="12" >
-                                <Form.Label>Task title</Form.Label>
                                 <Form.Control
                                     ref={this.titleInputRef}
                                     name='inputValueTitle'
@@ -98,7 +97,6 @@ class NewTaskOrEdit extends React.Component {
                         </Form.Row>
                         <Form.Row>
                             <Form.Group as={Col} md="12">
-                                <Form.Label>Description</Form.Label>
                                 <InputGroup>
                                     <Form.Control
                                         name='inputValueDesc'
