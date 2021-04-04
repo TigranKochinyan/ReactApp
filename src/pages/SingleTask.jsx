@@ -58,7 +58,13 @@ class SingleTask extends React.Component {
                                         Description: {task.description}
                                     </Card.Text>
                                     <Card.Text>
+                                        Status: {task.status}
+                                    </Card.Text>
+                                    <Card.Text>
                                         date: {formatingDate(task.date)}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Created at: {formatingDate(task.created_at)}
                                     </Card.Text>
                                     <Button
                                         className="icon-in-button"

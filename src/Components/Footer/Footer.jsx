@@ -13,10 +13,10 @@ const Footer = () => {
             </div>
             <div className="footer-second">
                 <ul>
-                    <li><Link target to="facebook.com">Facebook</Link></li>
-                    <li><Link to="linkedin.com">Linkedin</Link></li>
-                    <li><Link to="github.com">Github</Link></li>
-                    <li><Link to="vk.com">VK</Link></li>
+                    <li><a target="_blank" rel="noreferrer" href="https://www.facebook.com/tigran.qochinyan">Facebook</a></li>
+                    <li><a target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/tigran-kochinyan-146b7820a">Linkedin</a></li>
+                    <li><a target="_blank" rel="noreferrer" href="https://github.com/TigranKochinyan">Github</a></li>
+                    <li><a target="_blank" rel="noreferrer" href="https://vk.com/id148284421">VK</a></li>
                 </ul>
             </div>
         </div>

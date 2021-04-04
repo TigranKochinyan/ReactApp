@@ -31,6 +31,9 @@ const Task = (props) => {
                     Description: {cutText(task.description)}
                 </Card.Text>
                 <Card.Text>
+                    Status: {task.status}
+                </Card.Text>
+                <Card.Text>
                     Created at: {formatingDate(task.created_at)}
                 </Card.Text>
                 <Card.Text>

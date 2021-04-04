@@ -129,30 +129,24 @@ export default function reducer(state=defaultState, action){
           theme: action.theme
         };
       }
-      case 'LOGIN_SUCCSESS':{//not working
+      case 'LOGIN_SUCCSESS':{
         return {
           ...state,
           loading: false,
-          isAuthentificate: true,
-          successMessage: 'logined succsessfully'
-
+          isAuthentificate: true
         };
       }
-      case 'REGISTER_SUCCSESS':{//not working
+      case 'REGISTER_SUCCSESS':{
         return {
           ...state,
-          isAuthentificate: true,
-          loading: false,
-          successMessage: 'You are register succsessfully'
-
+          loading: false
         };
       }
-      case 'SIGN_OUT':{//not working
+      case 'SIGN_OUT':{
         return {
           ...state,
           isAuthentificate: false,
-          loading: false,
-          successMessage: 'You are signed out'
+          loading: false
         };
       }
       

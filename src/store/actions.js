@@ -115,17 +115,20 @@ export const deleteSelected = (requestBody, checkedTasks) => {
 
 export const send_from = (message) => {
     return (dispatch) => {
-        dispatch({type: actionTypes.PENDING});
-        requestWithoutToken(`${apiHost}/form`, 'POST', message)
-            .then( res => {
-                dispatch({type: actionTypes.SEND_FORM});
-                return res;
-            })
-            .catch(err => {
-                dispatch({type: actionTypes.ERROR, message: err.message});
-                return new Error('Something went wrong!');
-            });
+        return new Promise((resolve, reject) => {
+            dispatch({type: actionTypes.PENDING});
+            requestWithoutToken(`${apiHost}/form`, 'POST', message)
+                .then( res => {
+                    dispatch({type: actionTypes.SEND_FORM});
+                    resolve(res);
+                })
+                .catch(err => {
+                    dispatch({type: actionTypes.ERROR, message: err.message});
+                    reject(new Error('Something went wrong!'));
+                });
+        })
     }
+    
 };
 
 export const login = (data) => {//login password
@@ -150,9 +153,9 @@ export const register = (data) => {//login(email) password, name, surname,
 
         requestWithoutToken(`${apiHost}/user`, 'POST', data)
             .then( token => {
-                addTokenToLocalStorage(token);
-                dispatch({type: actionTypes.REGISTER_SUCCSESS}); // add token to localStorage 
-                history.push('/signin');                            // and redirect to sign in page
+                dispatch({type: actionTypes.REGISTER_SUCCSESS});
+                history.go('/signin');//redirect to sign in page
+                window.location = '/signin';
             })
             .catch(err => {
                 dispatch({type: actionTypes.ERROR, message: err.message});

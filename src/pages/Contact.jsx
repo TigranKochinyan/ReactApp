@@ -47,12 +47,13 @@ const Contact = (props) => {
                 email: inputValues.inputEmail,
                 message: inputValues.inputText
             })
-            console.log(props);
-            setInputValues({
-                inputName: '',
-                inputEmail: '',
-                inputText: ''
-            })
+            .then(() => {
+                setInputValues({
+                    inputName: '',
+                    inputEmail: '',
+                    inputText: ''
+                })
+            });
         };
     };
 
