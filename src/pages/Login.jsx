@@ -61,12 +61,11 @@ const Login = (props) => {
 
     return (
         <Container className="signin">
-            <Row className="signin-row">
+            <Row className="signin-row mt-3">
                 <Col lg={6} md={8} xs={12}>
                     <h1>Log in</h1>
-                    <Form>
+                    <Form className="mt-3">
                         <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Email</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -80,7 +79,6 @@ const Login = (props) => {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Password</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}

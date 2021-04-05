@@ -90,12 +90,11 @@ const Register = (props) => {
 
     return (
         <Container className="signin">
-            <Row className="signin-row">
+            <Row className="signin-row mt-3">
                 <Col lg={6} md={8} xs={12}>
                     <h1>Log in</h1>
-                    <Form>
+                    <Form className="mt-3">
                         <Form.Group controlId="formBasicName">
-                            <Form.Label>Name</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -109,7 +108,6 @@ const Register = (props) => {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicSurname">
-                            <Form.Label>Surname</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -123,7 +121,6 @@ const Register = (props) => {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Email</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -137,7 +134,6 @@ const Register = (props) => {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -151,7 +147,6 @@ const Register = (props) => {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicPassword2">
-                            <Form.Label>Confirm Password</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}

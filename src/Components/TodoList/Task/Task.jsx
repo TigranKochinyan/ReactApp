@@ -37,7 +37,7 @@ const Task = (props) => {
                     Created at: {formatingDate(task.created_at)}
                 </Card.Text>
                 <Card.Text>
-                    date: {formatingDate(task.date)}
+                    Date: {formatingDate(task.date)}
                 </Card.Text>
                 <Button
                     className="icon-in-button"

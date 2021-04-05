@@ -61,7 +61,7 @@ class SingleTask extends React.Component {
                                         Status: {task.status}
                                     </Card.Text>
                                     <Card.Text>
-                                        date: {formatingDate(task.date)}
+                                        Date: {formatingDate(task.date)}
                                     </Card.Text>
                                     <Card.Text>
                                         Created at: {formatingDate(task.created_at)}
